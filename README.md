@@ -1,18 +1,58 @@
-## Getting Started
+# Checklist de Implementação de Funcionalidades:
+## Grafo matriz de adjacência:
+- [ ] inserirAresta(int verticeOrigem, int verticeDestino)
+- [ ] removerAresta(int verticeOrigem, int verticeDestino)
+- [ ] ponderarVertice(int vertice, int peso)
+- [ ] rotularVertice(int vertice, String rotulo)
+- [ ] ponderarAresta(int verticeOrigem, int verticeDestino, int peso)
+- [ ] rotularAresta(int verticeOrigem, int verticeDestino, String rotulo)
+- [ ] verificaAdjacencia(int verticeOrigem, int verticeDestino)
+- [ ] verificaAdjacenciaArestas(int aresta1, int aresta2)
+- [ ] verificaIncidencia(int vertice, int aresta)
+- [ ] verificaExistenciaArestas()
+- [ ] getNumeroVertices()
+- [ ] getNumeroArestas()
+- [ ] isGrafoVazio()
+- [ ] isGrafoCompleto()
+- [ ] getVizinhanca(int vertice)
+- [ ] exportarGrafo()
+- [ ] importarGrafo()
+- [ ] dijkstra()
+- [ ] bellmanFord()
+- [ ] floydWarshall()
+- [ ] dijkstraMenorDistanciaUmParaTodos()
+- [ ] dijkstraMenorDistanciaTodosParaTodos()
+- [ ] bellmanFordMenorDistanciaUmParaTodos()
+- [ ] bellmanFordMenorDistanciaTodosParaTodos()
+- [ ] floydWarshallMenorDistanciaUmParaTodos()
+- [ ] floydWarshallMenorDistanciaTodosParaTodos()
+- [ ] AEstrela()
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
-
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Grafo lista de adjacência:
+- [ ] inserirAresta(int verticeOrigem, int verticeDestino)
+- [ ] removerAresta(int verticeOrigem, int verticeDestino)
+- [ ] ponderarVertice(int vertice, int peso)
+- [ ] rotularVertice(int vertice, String rotulo)
+- [ ] ponderarAresta(int verticeOrigem, int verticeDestino, int peso)
+- [ ] rotularAresta(int verticeOrigem, int verticeDestino, String rotulo)
+- [ ] verificaAdjacencia(int verticeOrigem, int verticeDestino)
+- [ ] verificaAdjacenciaArestas(int aresta1, int aresta2)
+- [ ] verificaIncidencia(int vertice, int aresta)
+- [ ] verificaExistenciaArestas()
+- [ ] getNumeroVertices()
+- [ ] getNumeroArestas()
+- [ ] isGrafoVazio()
+- [ ] isGrafoCompleto()
+- [ ] getVizinhanca(int vertice)
+- [ ] exportarGrafo()
+- [ ] importarGrafo()
+- [ ] dijkstra()
+- [ ] bellmanFord()
+- [ ] floydWarshall()
+- [ ] dijkstraMenorDistanciaUmParaTodos()
+- [ ] dijkstraMenorDistanciaTodosParaTodos()
+- [ ] bellmanFordMenorDistanciaUmParaTodos()
+- [ ] bellmanFordMenorDistanciaTodosParaTodos()
+- [ ] floydWarshallMenorDistanciaUmParaTodos()
+- [ ] floydWarshallMenorDistanciaTodosParaTodos()
+- [ ] AEstrela()
