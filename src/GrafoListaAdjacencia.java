@@ -1,17 +1,21 @@
+import java.util.ArrayList;
 import java.util.List;
 
-public class GrafoListaAdjacencia implements IGrafo{
+public class GrafoListaAdjacencia implements IGrafo<List<List<Integer>>> {
+    private List<List<Integer>> adjacencia;
+
+    public GrafoListaAdjacencia() {
+        adjacencia = new ArrayList<>();
+    }
 
     @Override
     public void inserirAresta(int verticeOrigem, int verticeDestino) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'inserirAresta'");
+        adjacencia.get(verticeOrigem).add(verticeDestino);
     }
 
     @Override
     public void removerAresta(int verticeOrigem, int verticeDestino) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removerAresta'");
+        adjacencia.get(verticeOrigem).remove(verticeDestino);
     }
 
     @Override
@@ -64,8 +68,7 @@ public class GrafoListaAdjacencia implements IGrafo{
 
     @Override
     public int getNumeroVertices() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getNumeroVertices'");
+        return adjacencia.size();
     }
 
     @Override
@@ -76,8 +79,7 @@ public class GrafoListaAdjacencia implements IGrafo{
 
     @Override
     public boolean isGrafoVazio() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isGrafoVazio'");
+        return adjacencia.isEmpty();
     }
 
     @Override
@@ -99,9 +101,69 @@ public class GrafoListaAdjacencia implements IGrafo{
     }
 
     @Override
-    public List importarGrafo() {
+    public List<List<Integer>> importarGrafo() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'importarGrafo'");
     }
-    
+
+    @Override
+    public void dijkstra() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'dijkstra'");
+    }
+
+    @Override
+    public void bellmanFord() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'bellmanFord'");
+    }
+
+    @Override
+    public void floydWarshall() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'floydWarshall'");
+    }
+
+    @Override
+    public int dijkstraMenorDistanciaUmParaTodos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'dijkstraMenorDistanciaUmParaTodos'");
+    }
+
+    @Override
+    public int dijkstraMenorDistanciaTodosParaTodos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'dijkstraMenorDistanciaTodosParaTodos'");
+    }
+
+    @Override
+    public int bellmanFordMenorDistanciaUmParaTodos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'bellmanFordMenorDistanciaUmParaTodos'");
+    }
+
+    @Override
+    public int bellmanFordMenorDistanciaTodosParaTodos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'bellmanFordMenorDistanciaTodosParaTodos'");
+    }
+
+    @Override
+    public int floydWarshallMenorDistanciaUmParaTodos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'floydWarshallMenorDistanciaUmParaTodos'");
+    }
+
+    @Override
+    public int floydWarshallMenorDistanciaTodosParaTodos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'floydWarshallMenorDistanciaTodosParaTodos'");
+    }
+
+    @Override
+    public void AEstrela() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'AEstrela'");
+    }
+
 }

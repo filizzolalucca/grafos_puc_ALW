@@ -1,8 +1,8 @@
 import java.util.List;
 
 public interface IGrafo<T> {
-    //Manipulação
-    //void criarGrafo(int numVertices); -> precisa?
+    // Manipulação
+    // void criarGrafo(int numVertices); -> precisa?
 
     void inserirAresta(int verticeOrigem, int verticeDestino);
 
@@ -39,7 +39,7 @@ public interface IGrafo<T> {
     T importarGrafo(); // Ponto extra
 
     void dijkstra();
-    
+
     void bellmanFord();
 
     void floydWarshall();
