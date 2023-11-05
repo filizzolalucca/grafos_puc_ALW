@@ -1,22 +1,33 @@
+import java.util.ArrayList;
 import java.util.List;
 
-public class GrafoListaAdjacencia implements IGrafo{
+public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
+    private List<Vertice> adjacencia;
+
+    public GrafoListaAdjacencia() {
+        adjacencia = new ArrayList<>();
+    }
+
+    public boolean inserirVertice(int index){
+        Vertice novo = new Vertice(index);
+        return this.adjacencia.add(novo);
+    }
 
     @Override
     public void inserirAresta(int verticeOrigem, int verticeDestino) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'inserirAresta'");
+        var origem = this.adjacencia.get(verticeOrigem);
+        origem.addAresta(verticeDestino);
     }
 
     @Override
     public void removerAresta(int verticeOrigem, int verticeDestino) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removerAresta'");
+        var origem = this.adjacencia.get(verticeOrigem);
+        origem.removeAresta(verticeDestino);
     }
 
     @Override
     public void ponderarVertice(int vertice, int peso) {
-        // TODO Auto-generated method stub
+        var origem = this.adjacencia.get(vertice);
         throw new UnsupportedOperationException("Unimplemented method 'ponderarVertice'");
     }
 
@@ -64,8 +75,7 @@ public class GrafoListaAdjacencia implements IGrafo{
 
     @Override
     public int getNumeroVertices() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getNumeroVertices'");
+        return adjacencia.size();
     }
 
     @Override
@@ -76,8 +86,7 @@ public class GrafoListaAdjacencia implements IGrafo{
 
     @Override
     public boolean isGrafoVazio() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isGrafoVazio'");
+        return adjacencia.isEmpty();
     }
 
     @Override
@@ -99,9 +108,69 @@ public class GrafoListaAdjacencia implements IGrafo{
     }
 
     @Override
-    public List importarGrafo() {
+    public List<Vertice> importarGrafo() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'importarGrafo'");
     }
-    
+
+    @Override
+    public void dijkstra() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'dijkstra'");
+    }
+
+    @Override
+    public void bellmanFord() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'bellmanFord'");
+    }
+
+    @Override
+    public void floydWarshall() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'floydWarshall'");
+    }
+
+    @Override
+    public int dijkstraMenorDistanciaUmParaTodos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'dijkstraMenorDistanciaUmParaTodos'");
+    }
+
+    @Override
+    public int dijkstraMenorDistanciaTodosParaTodos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'dijkstraMenorDistanciaTodosParaTodos'");
+    }
+
+    @Override
+    public int bellmanFordMenorDistanciaUmParaTodos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'bellmanFordMenorDistanciaUmParaTodos'");
+    }
+
+    @Override
+    public int bellmanFordMenorDistanciaTodosParaTodos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'bellmanFordMenorDistanciaTodosParaTodos'");
+    }
+
+    @Override
+    public int floydWarshallMenorDistanciaUmParaTodos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'floydWarshallMenorDistanciaUmParaTodos'");
+    }
+
+    @Override
+    public int floydWarshallMenorDistanciaTodosParaTodos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'floydWarshallMenorDistanciaTodosParaTodos'");
+    }
+
+    @Override
+    public void AEstrela() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'AEstrela'");
+    }
+
 }
