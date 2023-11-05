@@ -1,26 +1,33 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class GrafoListaAdjacencia implements IGrafo<List<List<Integer>>> {
-    private List<List<Integer>> adjacencia;
+public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
+    private List<Vertice> adjacencia;
 
     public GrafoListaAdjacencia() {
         adjacencia = new ArrayList<>();
     }
 
+    public boolean inserirVertice(int index){
+        Vertice novo = new Vertice(index);
+        return this.adjacencia.add(novo);
+    }
+
     @Override
     public void inserirAresta(int verticeOrigem, int verticeDestino) {
-        adjacencia.get(verticeOrigem).add(verticeDestino);
+        var origem = this.adjacencia.get(verticeOrigem);
+        origem.addAresta(verticeDestino);
     }
 
     @Override
     public void removerAresta(int verticeOrigem, int verticeDestino) {
-        adjacencia.get(verticeOrigem).remove(verticeDestino);
+        var origem = this.adjacencia.get(verticeOrigem);
+        origem.removeAresta(verticeDestino);
     }
 
     @Override
     public void ponderarVertice(int vertice, int peso) {
-        // TODO Auto-generated method stub
+        var origem = this.adjacencia.get(vertice);
         throw new UnsupportedOperationException("Unimplemented method 'ponderarVertice'");
     }
 
@@ -101,7 +108,7 @@ public class GrafoListaAdjacencia implements IGrafo<List<List<Integer>>> {
     }
 
     @Override
-    public List<List<Integer>> importarGrafo() {
+    public List<Vertice> importarGrafo() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'importarGrafo'");
     }
