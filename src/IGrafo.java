@@ -32,7 +32,7 @@ public interface IGrafo<T> {
 
     boolean isGrafoCompleto();
 
-    List<Integer> getVizinhanca(int vertice);
+    List<Vertice> getVizinhanca(int vertice);
 
     void exportarGrafo(); // Ponto extra
 

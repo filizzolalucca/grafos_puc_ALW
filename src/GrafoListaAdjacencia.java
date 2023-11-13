@@ -3,20 +3,23 @@ import java.util.List;
 
 public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     private List<Vertice> adjacencia;
+    private boolean direcionado;
 
     public GrafoListaAdjacencia() {
         adjacencia = new ArrayList<>();
     }
 
-    public boolean inserirVertice(int index){
-        Vertice novo = new Vertice(index);
+    public boolean inserirVertice(int rotulo){
+        Vertice novo = new Vertice(rotulo);
         return this.adjacencia.add(novo);
     }
 
     @Override
     public void inserirAresta(int verticeOrigem, int verticeDestino) {
         var origem = this.adjacencia.get(verticeOrigem);
-        origem.addAresta(verticeDestino);
+        var destino = this.adjacencia.get(verticeDestino);
+
+        origem.addAresta(destino);
     }
 
     @Override
@@ -26,8 +29,8 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     }
 
     @Override
-    public void ponderarVertice(int vertice, int peso) {
-        var origem = this.adjacencia.get(vertice);
+    public void ponderarVertice(int verticeOrigem, int peso) {
+        var origem = this.adjacencia.get(verticeOrigem);
         throw new UnsupportedOperationException("Unimplemented method 'ponderarVertice'");
     }
 
@@ -51,8 +54,9 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
 
     @Override
     public boolean verificaAdjacencia(int verticeOrigem, int verticeDestino) {
+        var origem = this.adjacencia.get(verticeOrigem);
+        return origem.existeAresta(verticeDestino);
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'verificaAdjacencia'");
     }
 
     @Override
@@ -96,10 +100,19 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     }
 
     @Override
-    public List<Integer> getVizinhanca(int vertice) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getVizinhanca'");
+    public List<Vertice> getVizinhanca(int vertice) {
+        var verticeOrigem = this.getVertice(vertice);
+        var arestas = verticeOrigem.getArestas();
+        List<Vertice> vizinhanca = new ArrayList<>();
+        for (Aresta aresta:
+             arestas) {
+            vizinhanca.add(aresta.destino());
+        }
+        return vizinhanca;
+
     }
+
+    // ATÉ AQUI
 
     @Override
     public void exportarGrafo() {
@@ -171,6 +184,26 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     public void AEstrela() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'AEstrela'");
+    }
+
+    private Vertice getVertice(int id){
+        for (Vertice vertice:
+             this.adjacencia) {
+            if(vertice.getId() == id){
+                return vertice;
+            }
+        }
+        throw new RuntimeException("Vertice nao encontrado");
+    }
+
+    private Vertice getVertice(String rotulo){
+        for (Vertice vertice:
+                this.adjacencia) {
+            if(vertice.getRotulo() == rotulo){
+                return vertice;
+            }
+        }
+        throw new RuntimeException("Vertice nao encontrado");
     }
 
 }
