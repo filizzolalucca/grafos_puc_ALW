@@ -3,7 +3,9 @@ import java.util.ArrayList;
 public class Vertice {
 
     private ArrayList<Aresta> arestas;
-    private final int id;
+    private int id;
+
+    private String rotulo;
     private boolean visitado;
 
     /**
@@ -26,6 +28,10 @@ public class Vertice {
         return this.id;
     }
 
+    public String getRotulo(){
+        return this.rotulo;
+    }
+
     /**
      * Retorna a lista de arestas
      *
@@ -35,9 +41,8 @@ public class Vertice {
         return this.arestas;
     }
 
-
-    public void addAresta(int destino, double peso) {
-        this.arestas.add(destino, new Aresta(peso, destino));
+    public void addAresta(Vertice destino, double peso) {
+        this.arestas.add(destino.id, new Aresta(peso, destino));
     }
 
     /**
@@ -45,12 +50,16 @@ public class Vertice {
      *
      * @param destino Vértice de destino
      */
-    public void addAresta(int destino) {
-        this.arestas.add(destino, new Aresta(-1, destino));
+    public void addAresta(Vertice destino) {
+        this.arestas.add(destino.id, new Aresta(-1, destino));
     }
 
-    public Aresta existeAresta(int destino) {
-        return this.arestas.get(destino);
+    public boolean existeAresta(int destino) {
+        try {
+            return this.arestas.get(destino) != null;
+        } catch ( IndexOutOfBoundsException e ) {
+            return false;
+        }
     }
 
     /**

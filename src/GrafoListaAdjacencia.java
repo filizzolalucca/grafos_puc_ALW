@@ -3,64 +3,81 @@ import java.util.List;
 
 public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     private List<Vertice> adjacencia;
+    private boolean direcionado;
 
     public GrafoListaAdjacencia() {
         adjacencia = new ArrayList<>();
     }
 
-    public boolean inserirVertice(int index){
-        Vertice novo = new Vertice(index);
+    //ALEKS
+    public boolean inserirVertice(int rotulo){
+        Vertice novo = new Vertice(rotulo);
         return this.adjacencia.add(novo);
     }
 
+    //ALEKS
     @Override
     public void inserirAresta(int verticeOrigem, int verticeDestino) {
         var origem = this.adjacencia.get(verticeOrigem);
-        origem.addAresta(verticeDestino);
+        var destino = this.adjacencia.get(verticeDestino);
+
+        origem.addAresta(destino);
+        if(!this.direcionado) {
+            destino.addAresta(origem);
+        }
     }
 
+    //ALEKS
     @Override
     public void removerAresta(int verticeOrigem, int verticeDestino) {
         var origem = this.adjacencia.get(verticeOrigem);
         origem.removeAresta(verticeDestino);
     }
 
+    //LUCCA
     @Override
-    public void ponderarVertice(int vertice, int peso) {
-        var origem = this.adjacencia.get(vertice);
+    public void ponderarVertice(int verticeOrigem, int peso) {
+        var origem = this.adjacencia.get(verticeOrigem);
         throw new UnsupportedOperationException("Unimplemented method 'ponderarVertice'");
     }
 
+    //LUCCA
     @Override
     public void rotularVertice(int vertice, String rotulo) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'rotularVertice'");
     }
 
+    //LUCCA
     @Override
     public void ponderarAresta(int verticeOrigem, int verticeDestino, int peso) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'ponderarAresta'");
     }
 
+    //LUCCA
     @Override
     public void rotularAresta(int verticeOrigem, int verticeDestino, String rotulo) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'rotularAresta'");
     }
 
+    //ALEKS
     @Override
     public boolean verificaAdjacencia(int verticeOrigem, int verticeDestino) {
+        var origem = this.adjacencia.get(verticeOrigem);
+        return origem.existeAresta(verticeDestino);
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'verificaAdjacencia'");
     }
 
+    //ALEKS
     @Override
     public boolean verificaAdjacenciaArestas(int aresta1, int aresta2) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'verificaAdjacenciaArestas'");
     }
 
+    // LUCCA VER COM WEMERSON
     @Override
     public boolean verificaIncidencia(int vertice, int aresta) {
         // TODO Auto-generated method stub
@@ -73,11 +90,13 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
         throw new UnsupportedOperationException("Unimplemented method 'verificaExistenciaArestas'");
     }
 
+    //ALEKS
     @Override
     public int getNumeroVertices() {
         return adjacencia.size();
     }
 
+    //ALEKS
     @Override
     public int getNumeroArestas() {
         // TODO Auto-generated method stub
@@ -89,6 +108,7 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
         return adjacencia.isEmpty();
     }
 
+    //LUCCA
     @Override
     public boolean isGrafoCompleto() {
         // TODO Auto-generated method stub
@@ -96,17 +116,28 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     }
 
     @Override
-    public List<Integer> getVizinhanca(int vertice) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getVizinhanca'");
+    public List<Vertice> getVizinhanca(int vertice) {
+        var verticeOrigem = this.getVertice(vertice);
+        var arestas = verticeOrigem.getArestas();
+        List<Vertice> vizinhanca = new ArrayList<>();
+        for (Aresta aresta:
+             arestas) {
+            vizinhanca.add(aresta.destino());
+        }
+        return vizinhanca;
+
     }
 
+    // ATÉ AQUI
+
+    //ALEKS
     @Override
     public void exportarGrafo() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'exportarGrafo'");
     }
 
+    //ALEKS
     @Override
     public List<Vertice> importarGrafo() {
         // TODO Auto-generated method stub
@@ -171,6 +202,26 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     public void AEstrela() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'AEstrela'");
+    }
+
+    private Vertice getVertice(int id){
+        for (Vertice vertice:
+             this.adjacencia) {
+            if(vertice.getId() == id){
+                return vertice;
+            }
+        }
+        throw new RuntimeException("Vertice nao encontrado");
+    }
+
+    private Vertice getVertice(String rotulo){
+        for (Vertice vertice:
+                this.adjacencia) {
+            if(vertice.getRotulo() == rotulo){
+                return vertice;
+            }
+        }
+        throw new RuntimeException("Vertice nao encontrado");
     }
 
 }
