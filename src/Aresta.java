@@ -6,14 +6,16 @@ public class Aresta {
 
     private String rotulo;
 
+    private int id;
+
     /**
      * Construtor para arestas com peso. A aresta é criada como não visitada.
      * 
      * @param peso2 Peso da aresta
      * @param destino  Vértice de destino
      */
-    public Aresta(double peso2, Vertice destino) {
-        init(peso2, destino);
+    public Aresta(double peso2, Vertice destino, int id) {
+        init(peso2, destino, id);
     }
 
     /**
@@ -21,12 +23,13 @@ public class Aresta {
      * 
      * @param destino Vértice de destino
      */
-    public Aresta(Vertice destino) {
-        init(-1, destino);
+    public Aresta(Vertice destino, int id) {
+        init(-1, destino, id);
     }
 
-    private void init(double peso2, Vertice destino) {
+    private void init(double peso2, Vertice destino, int id) {
         this.peso = peso2;
+        this.id = id;
         this.destino = destino;
         this.visitada = false;
     }
@@ -42,6 +45,22 @@ public class Aresta {
 
     public void setPeso(double peso) {
         this.peso = peso;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getRotulo() {
+        return rotulo;
+    }
+
+    public void setRotulo(String rotulo) {
+        this.rotulo = rotulo;
     }
 
     /**

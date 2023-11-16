@@ -6,6 +6,7 @@ public class Vertice {
     private int id;
 
     private String rotulo;
+    private double pesoVertice;
     private boolean visitado;
 
     /**
@@ -16,6 +17,8 @@ public class Vertice {
     public Vertice(int id) {
         this.id = id;
         this.arestas = new ArrayList<>();
+        this.pesoVertice = 0;
+        this.rotulo = "";
         this.visitado = false;
     }
 
@@ -26,6 +29,18 @@ public class Vertice {
      */
     public int getId() {
         return this.id;
+    }
+
+    public double getPesoVertice() {
+        return this.pesoVertice;
+    }
+
+    public void setRotulo(String rotulo) {
+        this.rotulo = rotulo;
+    }
+
+    public void setPesoVertice(double pesoVertice) {
+        this.pesoVertice = pesoVertice;
     }
 
     public String getRotulo(){
@@ -50,9 +65,35 @@ public class Vertice {
      *
      * @param destino Vértice de destino
      */
-    public void addAresta(Vertice destino) {
-        this.arestas.add(destino.id, new Aresta(-1, destino));
+    public void addAresta(Vertice destino, int idAresta) {
+        this.arestas.add(destino.id, new Aresta(-1, destino, idAresta));
     }
+
+    public void ponderarAresta(Vertice destino,double pesoVertice) {
+        this.arestas.forEach((aresta) -> {
+            if (aresta.destino().getId() == destino.getId()){
+                aresta.setPeso(pesoVertice);
+            } else {
+                //se der tempo fazer tratamento de erro
+                System.out.println("Nao existe uma aresta entre os vertices informados");
+            }
+        });
+    }
+
+    public void rotularAresta(Vertice destino, String rotulo) {
+        this.arestas.forEach((aresta) -> {
+            if (aresta.destino().getId() == destino.getId()){
+                aresta.setRotulo(rotulo);
+            } else {
+                //se der tempo fazer tratamento de erro
+                System.out.println("Nao existe uma aresta entre os vertices informados");
+            }
+        });
+    }
+
+
+
+
 
     public boolean existeAresta(int destino) {
         try {
