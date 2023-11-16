@@ -93,7 +93,7 @@ public class GrafoMatrizAdjacencia implements IGrafo{
     }
 
     @Override
-    public void exportarGrafo() {
+    public void exportarGrafo(String nomeArquivo) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'exportarGrafo'");
     }

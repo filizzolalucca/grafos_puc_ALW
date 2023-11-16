@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,8 +68,8 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     @Override
     public boolean verificaAdjacencia(int verticeOrigem, int verticeDestino) {
         var origem = this.adjacencia.get(verticeOrigem);
-        return origem.existeAresta(verticeDestino);
-        // TODO Auto-generated method stub
+        var destino = this.adjacencia.get(verticeDestino);
+        return origem.existeAresta(verticeDestino) || destino.existeAresta(verticeOrigem);
     }
 
     //ALEKS
@@ -99,8 +101,12 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     //ALEKS
     @Override
     public int getNumeroArestas() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getNumeroArestas'");
+        int numArestas = 0;
+        for (Vertice vertice:
+             this.adjacencia) {
+            numArestas += vertice.getArestas().size();
+        }
+       return numArestas;
     }
 
     @Override
@@ -132,9 +138,38 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
 
     //ALEKS
     @Override
-    public void exportarGrafo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'exportarGrafo'");
+    public void exportarGrafo(String nomeArquivo) {
+        try (FileWriter writer = new FileWriter(nomeArquivo)) {
+            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            writer.write("<gexf xmlns=\"http://www.gexf.net/1.3draft\" version=\"1.3\">\n");
+            writer.write("<graph mode=\"static\" defaultedgetype=\"undirected\">\n");
+
+            // Escreve os vértices
+            writer.write("<nodes>\n");
+            for (Vertice vertice : adjacencia) {
+                writer.write("<node id=\"" + vertice.getId() + "\" label=\"" + vertice.getId() + "\"/>\n");
+            }
+            writer.write("</nodes>\n");
+
+            // Escreve as arestas
+            writer.write("<edges>\n");
+            int idAresta = 0;
+            for (Vertice verticeOrigem : adjacencia) {
+                for (Aresta aresta : verticeOrigem.getArestas()) {
+                    Vertice verticeDestino = aresta.destino();
+                    double peso = aresta.peso();  // Obtém o peso da aresta
+                    writer.write("<edge id=\"" + idAresta++ + "\" source=\"" + verticeOrigem.getId() + "\" target=\"" + verticeDestino.getId() + "\" weight=\"" + peso + "\"/>\n");
+                }
+            }
+            writer.write("</edges>\n");
+
+            writer.write("</graph>\n");
+            writer.write("</gexf>\n");
+
+            System.out.println("Grafo exportado com sucesso para " + nomeArquivo);
+        } catch (IOException e) {
+            System.err.println("Erro ao exportar o grafo para GEXF: " + e.getMessage());
+        }
     }
 
     //ALEKS

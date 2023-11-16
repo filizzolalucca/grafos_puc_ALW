@@ -34,7 +34,7 @@ public interface IGrafo<T> {
 
     List<Vertice> getVizinhanca(int vertice);
 
-    void exportarGrafo(); // Ponto extra
+    void exportarGrafo(String nomeArquivo); // Ponto extra
 
     T importarGrafo(); // Ponto extra
 
