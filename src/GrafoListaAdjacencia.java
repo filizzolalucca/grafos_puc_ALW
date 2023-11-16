@@ -88,10 +88,12 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
         //Verificando se a aresta informada pelo id chega no vertice origem
         for (Vertice verticeX : this.adjacencia ) {
             if(verticeX.getId() != origem.getId()) {
-                for( Aresta aresta1 : verticeX.getArestas()) {
-                    if(aresta1.getId() == aresta) {
-                        if (aresta1.destino().getId() == origem.getId()) {
-                            return true;
+                if(verticeX.existeAresta(origem.getId())) {
+                    for( Aresta aresta1 : verticeX.getArestas()) {
+                        if(aresta1.getId() == aresta) {
+                            if (aresta1.destino().getId() == origem.getId()) {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -111,10 +113,11 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     }
 
     @Override
-    public boolean verificaExistenciaArestas() {
-        //talvez duplicado
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'verificaExistenciaArestas'");
+    public boolean verificaExistenciaArestas(int vertice1, int vertice2) {
+        var v1 = this.adjacencia.get(vertice1);
+        var v2 = this.adjacencia.get(vertice2);
+
+        return  v1.existeAresta(v2.getId()) || v2.existeAresta(v1.getId());
     }
 
     //ALEKS

@@ -22,7 +22,7 @@ public interface IGrafo<T> {
 
     boolean verificaIncidencia(int vertice, int aresta);
 
-    boolean verificaExistenciaArestas();
+    boolean verificaExistenciaArestas(int vertice1, int vertice2);
 
     int getNumeroVertices();
 

@@ -56,8 +56,8 @@ public class Vertice {
         return this.arestas;
     }
 
-    public void addAresta(Vertice destino, double peso) {
-        this.arestas.add(destino.id, new Aresta(peso, destino));
+    public void addAresta(Vertice destino, double peso, int id) {
+        this.arestas.add(destino.id, new Aresta(peso, destino, id));
     }
 
     /**
