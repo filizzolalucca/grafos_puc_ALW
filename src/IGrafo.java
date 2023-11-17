@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IGrafo<T> {
@@ -16,11 +17,11 @@ public interface IGrafo<T> {
 
     void rotularAresta(int verticeOrigem, int verticeDestino, String rotulo);
 
-    boolean verificaAdjacencia(int verticeOrigem, int verticeDestino);
+    boolean verificaAdjacenciaVertice(int verticeOrigem, int verticeDestino);
 
-    boolean verificaAdjacenciaArestas(int aresta1, int aresta2);
+    boolean verificaAdjacenciaArestas(int vertice1, int vertice2);
 
-    boolean verificaIncidencia(int vertice, int aresta);
+    boolean verificaIncidenciaArestaVertice(int vertice);
 
     boolean verificaExistenciaArestas(int verticeOrigem, int verticeDestino);
 

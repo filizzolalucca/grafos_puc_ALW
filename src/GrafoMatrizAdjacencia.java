@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,7 @@ public class GrafoMatrizAdjacencia implements IGrafo{
 
     @Override
     public void rotularAresta(int verticeOrigem, int verticeDestino, String rotulo) {
-        if(verificaExistenciaArestas(verticeOrigem, verticeDestino)){
+        if(verificaAdjacenciaVertice(verticeOrigem, verticeDestino)){
             if(verticeOrigem >= 0 && verticeDestino >= 0 && verticeOrigem < matriz.length && verticeDestino < matriz.length){
                 String chave = verticeOrigem + "-" + verticeDestino;
                 rotulosArestas.put(chave, rotulo);
@@ -68,27 +69,44 @@ public class GrafoMatrizAdjacencia implements IGrafo{
         }
     }
 
-     @Override
+    @Override
     public boolean verificaExistenciaArestas(int verticeOrigem, int verticeDestino) {
+        //duplicado com verificaAdjacenciaVertice()
          return matriz[verticeOrigem][verticeDestino] != 0;
     }
 
     @Override
-    public boolean verificaAdjacencia(int verticeOrigem, int verticeDestino) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'verificaAdjacencia'");
+    public boolean verificaAdjacenciaVertice(int verticeOrigem, int verticeDestino) {
+        if (direcionado) {
+            return matriz[verticeOrigem][verticeDestino] != 0;
+        } else {
+            return matriz[verticeOrigem][verticeDestino] != 0 || matriz[verticeDestino][verticeOrigem] != 0;
+        }
     }
 
     @Override
-    public boolean verificaAdjacenciaArestas(int aresta1, int aresta2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'verificaAdjacenciaArestas'");
+    public boolean verificaAdjacenciaArestas(int vertice1, int vertice2) {
+        return true;
     }
 
     @Override
-    public boolean verificaIncidencia(int vertice, int aresta) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'verificaIncidencia'");
+    public boolean verificaIncidenciaArestaVertice(int vertice) {
+        
+        
+        return true;
+    }
+
+    private ArrayList<int[]> listarArestasIncidentes(int vertice, int aresta) {
+        ArrayList<int[]> arestasIncidentes = new ArrayList<>();
+        if(vertice >= 0 && vertice < matriz.length ){
+            for(int i = 0; i < matriz[vertice].length; i++){
+                if(matriz[vertice][i] != 0){
+                    int[] parArestaIncidente = {vertice, i};
+                    arestasIncidentes.add(parArestaIncidente);
+                }
+            }
+        }
+        return arestasIncidentes;
     }
 
     @Override
