@@ -19,13 +19,14 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
 
     //ALEKS
     @Override
-    public void inserirAresta(int verticeOrigem, int verticeDestino) {
+    public void inserirAresta(int verticeOrigem, int verticeDestino, int idAresta) {
+        //Coloquei um id na aresta por conto do metodo verificaIncidencia que busca uma aresta especifica,a aceito sugestoes
         var origem = this.adjacencia.get(verticeOrigem);
         var destino = this.adjacencia.get(verticeDestino);
 
-        origem.addAresta(destino);
+        origem.addAresta(destino, idAresta);
         if(!this.direcionado) {
-            destino.addAresta(origem);
+            destino.addAresta(origem, idAresta);
         }
     }
 
@@ -40,28 +41,30 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     @Override
     public void ponderarVertice(int verticeOrigem, int peso) {
         var origem = this.adjacencia.get(verticeOrigem);
-        throw new UnsupportedOperationException("Unimplemented method 'ponderarVertice'");
+        origem.setPesoVertice(peso);
     }
 
     //LUCCA
     @Override
     public void rotularVertice(int vertice, String rotulo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'rotularVertice'");
+        var origem = this.adjacencia.get(vertice);
+        origem.setRotulo(rotulo);
     }
 
     //LUCCA
     @Override
     public void ponderarAresta(int verticeOrigem, int verticeDestino, int peso) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'ponderarAresta'");
+        var origem = this.adjacencia.get(verticeOrigem);
+        var destino = this.adjacencia.get(verticeDestino);
+        origem.ponderarAresta(destino, peso);
     }
 
     //LUCCA
     @Override
     public void rotularAresta(int verticeOrigem, int verticeDestino, String rotulo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'rotularAresta'");
+        var origem = this.adjacencia.get(verticeOrigem);
+        var destino = this.adjacencia.get(verticeDestino);
+        origem.rotularAresta(destino, rotulo);
     }
 
     //ALEKS
@@ -79,17 +82,44 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
         throw new UnsupportedOperationException("Unimplemented method 'verificaAdjacenciaArestas'");
     }
 
-    // LUCCA VER COM WEMERSON
+    // LUCCA VER COM WEMERSON -> Ver com  alek
     @Override
     public boolean verificaIncidencia(int vertice, int aresta) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'verificaIncidencia'");
+        Vertice origem = this.adjacencia.get(vertice);
+
+        //Verificando se a aresta informada pelo id chega no vertice origem
+        for (Vertice verticeX : this.adjacencia ) {
+            if(verticeX.getId() != origem.getId()) {
+                if(verticeX.existeAresta(origem.getId())) {
+                    for( Aresta aresta1 : verticeX.getArestas()) {
+                        if(aresta1.getId() == aresta) {
+                            if (aresta1.destino().getId() == origem.getId()) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //Verifico se a aresta informada pelo id sai do vertice origem
+        for(Aresta arestaOrigem : origem.getArestas()) {
+            if(arestaOrigem.getId() == aresta) {
+                if (arestaOrigem.destino().getId() == origem.getId()) {
+                    return  true;
+                }
+            }
+        }
+
+        return false;
     }
 
     @Override
-    public boolean verificaExistenciaArestas() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'verificaExistenciaArestas'");
+    public boolean verificaExistenciaArestas(int vertice1, int vertice2) {
+        var v1 = this.adjacencia.get(vertice1);
+        var v2 = this.adjacencia.get(vertice2);
+
+        return  v1.existeAresta(v2.getId()) || v2.existeAresta(v1.getId());
     }
 
     //ALEKS
@@ -117,8 +147,13 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     //LUCCA
     @Override
     public boolean isGrafoCompleto() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isGrafoCompleto'");
+        int contArestas = 0;
+        int numVertices = this.adjacencia.size();
+        for(Vertice vertice : this.adjacencia) {
+            contArestas += vertice.getArestas().size();
+        }
+
+        return contArestas == ((numVertices - 1) *numVertices)/ 2;
     }
 
     @Override

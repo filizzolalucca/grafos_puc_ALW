@@ -4,7 +4,7 @@ public interface IGrafo<T> {
     // Manipulação
     // void criarGrafo(int numVertices); -> precisa?
 
-    void inserirAresta(int verticeOrigem, int verticeDestino);
+    void inserirAresta(int verticeOrigem, int verticeDestino, int idAresta);
 
     void removerAresta(int verticeOrigem, int verticeDestino);
 
@@ -22,7 +22,7 @@ public interface IGrafo<T> {
 
     boolean verificaIncidencia(int vertice, int aresta);
 
-    boolean verificaExistenciaArestas();
+    boolean verificaExistenciaArestas(int vertice1, int vertice2);
 
     int getNumeroVertices();
 

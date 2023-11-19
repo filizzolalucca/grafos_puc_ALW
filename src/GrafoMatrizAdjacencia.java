@@ -3,7 +3,7 @@ import java.util.List;
 public class GrafoMatrizAdjacencia implements IGrafo{
 
     @Override
-    public void inserirAresta(int verticeOrigem, int verticeDestino) {
+    public void inserirAresta(int verticeOrigem, int verticeDestino, int idAresta) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'inserirAresta'");
     }
