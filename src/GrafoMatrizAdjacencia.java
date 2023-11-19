@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,8 +16,12 @@ public class GrafoMatrizAdjacencia implements IGrafo{
     private String[] rotulosVertices;
     // private int[] pesosArestas;
     private Map<String, String> rotulosArestas = new HashMap<>();
+    private int totalArestas = 0;
 
     
+    GrafoMatrizAdjacencia(){
+
+    }
 
     public GrafoMatrizAdjacencia(int tamanho, boolean direcionado) {
         matriz = new int[tamanho][tamanho];
@@ -25,6 +34,7 @@ public class GrafoMatrizAdjacencia implements IGrafo{
     public void inserirAresta(int verticeOrigem, int verticeDestino) {
         if(verticeOrigem >= 0 && verticeDestino >= 0 && verticeOrigem < matriz.length && verticeDestino < matriz.length ){
             matriz[verticeOrigem][verticeDestino] = 1;
+            totalArestas++;
         }
     }
 
@@ -32,6 +42,7 @@ public class GrafoMatrizAdjacencia implements IGrafo{
     public void removerAresta(int verticeOrigem, int verticeDestino) {
         if(verticeOrigem >= 0 && verticeDestino >= 0 && verticeOrigem < matriz.length && verticeDestino < matriz.length){
             matriz[verticeOrigem][verticeDestino] = 0;
+            totalArestas--;
         }
     }
 
@@ -84,19 +95,30 @@ public class GrafoMatrizAdjacencia implements IGrafo{
         }
     }
 
+    //Este método deveria ser realmente um boolean? Ou retornar um vetor de arestas adjacentes?
     @Override
     public boolean verificaAdjacenciaArestas(int vertice1, int vertice2) {
+        List<int[]> arestasAdjacentes = new ArrayList<>();
+        if(verificaExistenciaArestas(vertice1, vertice2)){
+            for(int i = 0; i < matriz.length; i++){
+                if(i != vertice2 && matriz[vertice1][i] != 0){
+                    arestasAdjacentes.add(new int[]{vertice1, i});
+                }
+                if(!direcionado && i != vertice1 && matriz[vertice2][i] != 0){
+                    arestasAdjacentes.add(new int[]{vertice2, i});
+                }
+            }
+        }
+        //return arestasAdjacentes;
         return true;
     }
 
     @Override
     public boolean verificaIncidenciaArestaVertice(int vertice) {
-        
-        
         return true;
     }
 
-    private ArrayList<int[]> listarArestasIncidentes(int vertice, int aresta) {
+    private ArrayList<int[]> listarArestasIncidentes(int vertice) {
         ArrayList<int[]> arestasIncidentes = new ArrayList<>();
         if(vertice >= 0 && vertice < matriz.length ){
             for(int i = 0; i < matriz[vertice].length; i++){
@@ -116,19 +138,20 @@ public class GrafoMatrizAdjacencia implements IGrafo{
 
     @Override
     public int getNumeroArestas() {
-        int numArestas = 0;
-        int numVertices = matriz.length;
-
-        for (int i = 0; i < numVertices; i++) {
-            for (int j = 0; j < numVertices; j++) {
-                if (matriz[i][j] != 0) {
-                    numArestas++;
-                }
-            }
+        return totalArestas;
     }
-        if(direcionado) return numArestas/2;
 
-        else return numArestas;
+    public int[][] getMatrizAdjacencia(){
+        int linhas = matriz.length;
+        int colunas = matriz[0].length;
+
+        int[][] matrizCopia = new int[linhas][colunas];
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                matrizCopia[i][j] = matriz[i][j];
+        }
+    }
+    return matrizCopia;
     }
 
     @Override
@@ -145,26 +168,90 @@ public class GrafoMatrizAdjacencia implements IGrafo{
 
     @Override
     public boolean isGrafoCompleto() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isGrafoCompleto'");
+        int maxArestas;
+
+        if(direcionado) maxArestas = (matriz.length*(matriz.length-1));
+
+        else maxArestas=(matriz.length*(matriz.length-1))/2;
+
+        if(totalArestas < maxArestas) return false;
+
+        else return true;
     }
 
     @Override
     public List<Integer> getVizinhanca(int vertice) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getVizinhanca'");
+            List<Integer> vizinhos = new ArrayList<>();
+            for(int j = 0; j< matriz[vertice].length; j++){
+                if(matriz[vertice][j] != 0){
+                    vizinhos.add(j);
+                }
+            }
+            return vizinhos;
     }
 
     @Override
-    public void exportarGrafo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'exportarGrafo'");
+    public void exportarGrafo(String caminho) throws IOException {
+        PrintWriter writer = new PrintWriter(new FileWriter(caminho));
+        writer.println("*Vertices " + matriz.length);
+        for (int i = 0; i < matriz.length; i++) {
+            writer.println((i + 1));
+        }
+
+    if(direcionado) writer.println("*Arcs");
+    else writer.println("*Edges");
+
+    for (int i = 0; i < matriz.length; i++) {
+        for (int j = 0; j < matriz[i].length; j++) { // Comece j de 0, não de i
+            if (matriz[i][j] != 0) {
+                writer.println((i + 1) + " " + (j + 1) + " " + matriz[i][j]);
+            }
+        }
+    }
+    writer.close();
     }
 
+    /**Este método não importa grafos rotulados ainda.
+     * 
+     */
     @Override
-    public int[][] importarGrafo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'importarGrafo'");
+    public void importarGrafo(String arquivo) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(arquivo));
+        String linha;
+        while ((linha = reader.readLine()) != null) {
+            String[] partes = linha.split(" ");
+
+            if (partes[0].equals("*Vertices")) {
+                int numVertices = Integer.parseInt(partes[1]);
+                this.matriz = new int[numVertices][numVertices];
+                continue;
+        }
+        if (partes[0].equals("*Edges")) {
+            while ((linha = reader.readLine()) != null) {
+                partes = linha.split(" ");
+                int v1 = Integer.parseInt(partes[0]) - 1; // Pajek começa a contagem em 1
+                int v2 = Integer.parseInt(partes[1]) - 1; // Pajek começa a contagem em 1
+                int peso = partes.length > 2 ? Integer.parseInt(partes[2]) : 1; // Pega o peso se existir, senão assume 1
+                matriz[v1][v2] = peso; // Adicione a aresta ao seu grafo aqui
+                if (!direcionado) {
+                    matriz[v2][v1] = peso; // Para grafos não direcionados
+                }
+            }
+        }
+    }
+    reader.close();
+    }
+
+    
+
+    @Override
+    public void imprimeGrafo() {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                System.out.print(matriz[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
     @Override

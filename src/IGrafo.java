@@ -1,7 +1,8 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface IGrafo<T> {
+public interface IGrafo {
     //Manipulação
     //void criarGrafo(int numVertices); -> precisa?
 
@@ -35,9 +36,9 @@ public interface IGrafo<T> {
 
     List<Integer> getVizinhanca(int vertice);
 
-    void exportarGrafo(); // Ponto extra
+    void exportarGrafo(String caminho) throws IOException; // Ponto extra
 
-    T importarGrafo(); // Ponto extra
+    void importarGrafo(String arquivo) throws IOException; // Ponto extra
 
     void dijkstra();
     
@@ -58,4 +59,6 @@ public interface IGrafo<T> {
     int floydWarshallMenorDistanciaTodosParaTodos();
 
     void AEstrela(); // Ponto extra
+
+    void imprimeGrafo();
 }
