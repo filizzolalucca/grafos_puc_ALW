@@ -3,10 +3,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface IGrafo {
-    //Manipulação
-    //void criarGrafo(int numVertices); -> precisa?
+    // Manipulação
+    // void criarGrafo(int numVertices); -> precisa?
 
-    void inserirAresta(int verticeOrigem, int verticeDestino);
+    void inserirAresta(int verticeOrigem, int verticeDestino, int idAresta);
 
     void removerAresta(int verticeOrigem, int verticeDestino);
 
@@ -34,14 +34,14 @@ public interface IGrafo {
 
     boolean isGrafoCompleto();
 
-    List<Integer> getVizinhanca(int vertice);
+    List<Vertice> getVizinhanca(int vertice);
 
     void exportarGrafo(String caminho) throws IOException; // Ponto extra
 
     void importarGrafo(String arquivo) throws IOException; // Ponto extra
 
     void dijkstra();
-    
+
     void bellmanFord();
 
     void floydWarshall();

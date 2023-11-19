@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GrafoMatrizAdjacencia implements IGrafo{
+public class GrafoMatrizAdjacencia implements IGrafo {
 
     private int[][] matriz;
     private boolean direcionado;
@@ -18,8 +18,7 @@ public class GrafoMatrizAdjacencia implements IGrafo{
     private Map<String, String> rotulosArestas = new HashMap<>();
     private int totalArestas = 0;
 
-    
-    GrafoMatrizAdjacencia(){
+    GrafoMatrizAdjacencia() {
 
     }
 
@@ -32,7 +31,8 @@ public class GrafoMatrizAdjacencia implements IGrafo{
 
     @Override
     public void inserirAresta(int verticeOrigem, int verticeDestino) {
-        if(verticeOrigem >= 0 && verticeDestino >= 0 && verticeOrigem < matriz.length && verticeDestino < matriz.length ){
+        if (verticeOrigem >= 0 && verticeDestino >= 0 && verticeOrigem < matriz.length
+                && verticeDestino < matriz.length) {
             matriz[verticeOrigem][verticeDestino] = 1;
             totalArestas++;
         }
@@ -40,7 +40,8 @@ public class GrafoMatrizAdjacencia implements IGrafo{
 
     @Override
     public void removerAresta(int verticeOrigem, int verticeDestino) {
-        if(verticeOrigem >= 0 && verticeDestino >= 0 && verticeOrigem < matriz.length && verticeDestino < matriz.length){
+        if (verticeOrigem >= 0 && verticeDestino >= 0 && verticeOrigem < matriz.length
+                && verticeDestino < matriz.length) {
             matriz[verticeOrigem][verticeDestino] = 0;
             totalArestas--;
         }
@@ -48,42 +49,43 @@ public class GrafoMatrizAdjacencia implements IGrafo{
 
     @Override
     public void ponderarVertice(int vertice, int peso) {
-        if(vertice >= 0 && vertice < pesosVertices.length){
+        if (vertice >= 0 && vertice < pesosVertices.length) {
             pesosVertices[vertice] = peso;
         }
     }
 
     @Override
     public void rotularVertice(int vertice, String rotulo) {
-        if(vertice >= 0 && vertice < rotulosVertices.length){
+        if (vertice >= 0 && vertice < rotulosVertices.length) {
             rotulosVertices[vertice] = rotulo;
         }
     }
 
     @Override
     public void ponderarAresta(int verticeOrigem, int verticeDestino, int peso) {
-        if(verticeOrigem >= 0 && verticeDestino >= 0 && verticeOrigem < matriz.length && verticeDestino < matriz.length){
+        if (verticeOrigem >= 0 && verticeDestino >= 0 && verticeOrigem < matriz.length
+                && verticeDestino < matriz.length) {
             matriz[verticeOrigem][verticeDestino] = peso;
         }
     }
 
     @Override
     public void rotularAresta(int verticeOrigem, int verticeDestino, String rotulo) {
-        if(verificaAdjacenciaVertice(verticeOrigem, verticeDestino)){
-            if(verticeOrigem >= 0 && verticeDestino >= 0 && verticeOrigem < matriz.length && verticeDestino < matriz.length){
+        if (verificaAdjacenciaVertice(verticeOrigem, verticeDestino)) {
+            if (verticeOrigem >= 0 && verticeDestino >= 0 && verticeOrigem < matriz.length
+                    && verticeDestino < matriz.length) {
                 String chave = verticeOrigem + "-" + verticeDestino;
                 rotulosArestas.put(chave, rotulo);
             }
-        }
-        else{
+        } else {
             System.out.println("Aresta inexistente ou inválida");
         }
     }
 
     @Override
     public boolean verificaExistenciaArestas(int verticeOrigem, int verticeDestino) {
-        //duplicado com verificaAdjacenciaVertice()
-         return matriz[verticeOrigem][verticeDestino] != 0;
+        // duplicado com verificaAdjacenciaVertice()
+        return matriz[verticeOrigem][verticeDestino] != 0;
     }
 
     @Override
@@ -95,21 +97,22 @@ public class GrafoMatrizAdjacencia implements IGrafo{
         }
     }
 
-    //Este método deveria ser realmente um boolean? Ou retornar um vetor de arestas adjacentes?
+    // Este método deveria ser realmente um boolean? Ou retornar um vetor de arestas
+    // adjacentes?
     @Override
     public boolean verificaAdjacenciaArestas(int vertice1, int vertice2) {
         List<int[]> arestasAdjacentes = new ArrayList<>();
-        if(verificaExistenciaArestas(vertice1, vertice2)){
-            for(int i = 0; i < matriz.length; i++){
-                if(i != vertice2 && matriz[vertice1][i] != 0){
-                    arestasAdjacentes.add(new int[]{vertice1, i});
+        if (verificaExistenciaArestas(vertice1, vertice2)) {
+            for (int i = 0; i < matriz.length; i++) {
+                if (i != vertice2 && matriz[vertice1][i] != 0) {
+                    arestasAdjacentes.add(new int[] { vertice1, i });
                 }
-                if(!direcionado && i != vertice1 && matriz[vertice2][i] != 0){
-                    arestasAdjacentes.add(new int[]{vertice2, i});
+                if (!direcionado && i != vertice1 && matriz[vertice2][i] != 0) {
+                    arestasAdjacentes.add(new int[] { vertice2, i });
                 }
             }
         }
-        //return arestasAdjacentes;
+        // return arestasAdjacentes;
         return true;
     }
 
@@ -120,10 +123,10 @@ public class GrafoMatrizAdjacencia implements IGrafo{
 
     private ArrayList<int[]> listarArestasIncidentes(int vertice) {
         ArrayList<int[]> arestasIncidentes = new ArrayList<>();
-        if(vertice >= 0 && vertice < matriz.length ){
-            for(int i = 0; i < matriz[vertice].length; i++){
-                if(matriz[vertice][i] != 0){
-                    int[] parArestaIncidente = {vertice, i};
+        if (vertice >= 0 && vertice < matriz.length) {
+            for (int i = 0; i < matriz[vertice].length; i++) {
+                if (matriz[vertice][i] != 0) {
+                    int[] parArestaIncidente = { vertice, i };
                     arestasIncidentes.add(parArestaIncidente);
                 }
             }
@@ -141,7 +144,7 @@ public class GrafoMatrizAdjacencia implements IGrafo{
         return totalArestas;
     }
 
-    public int[][] getMatrizAdjacencia(){
+    public int[][] getMatrizAdjacencia() {
         int linhas = matriz.length;
         int colunas = matriz[0].length;
 
@@ -149,16 +152,16 @@ public class GrafoMatrizAdjacencia implements IGrafo{
         for (int i = 0; i < linhas; i++) {
             for (int j = 0; j < colunas; j++) {
                 matrizCopia[i][j] = matriz[i][j];
+            }
         }
-    }
-    return matrizCopia;
+        return matrizCopia;
     }
 
     @Override
     public boolean isGrafoVazio() {
-        for(int i = 0; i< matriz.length; i++){
-            for(int j = 0; j< matriz[0].length; j++){
-                if(matriz[i][j] != 0){
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                if (matriz[i][j] != 0) {
                     return false;
                 }
             }
@@ -170,24 +173,28 @@ public class GrafoMatrizAdjacencia implements IGrafo{
     public boolean isGrafoCompleto() {
         int maxArestas;
 
-        if(direcionado) maxArestas = (matriz.length*(matriz.length-1));
+        if (direcionado)
+            maxArestas = (matriz.length * (matriz.length - 1));
 
-        else maxArestas=(matriz.length*(matriz.length-1))/2;
+        else
+            maxArestas = (matriz.length * (matriz.length - 1)) / 2;
 
-        if(totalArestas < maxArestas) return false;
+        if (totalArestas < maxArestas)
+            return false;
 
-        else return true;
+        else
+            return true;
     }
 
     @Override
     public List<Integer> getVizinhanca(int vertice) {
-            List<Integer> vizinhos = new ArrayList<>();
-            for(int j = 0; j< matriz[vertice].length; j++){
-                if(matriz[vertice][j] != 0){
-                    vizinhos.add(j);
-                }
+        List<Integer> vizinhos = new ArrayList<>();
+        for (int j = 0; j < matriz[vertice].length; j++) {
+            if (matriz[vertice][j] != 0) {
+                vizinhos.add(j);
             }
-            return vizinhos;
+        }
+        return vizinhos;
     }
 
     @Override
@@ -198,20 +205,23 @@ public class GrafoMatrizAdjacencia implements IGrafo{
             writer.println((i + 1));
         }
 
-    if(direcionado) writer.println("*Arcs");
-    else writer.println("*Edges");
+        if (direcionado)
+            writer.println("*Arcs");
+        else
+            writer.println("*Edges");
 
-    for (int i = 0; i < matriz.length; i++) {
-        for (int j = 0; j < matriz[i].length; j++) { // Comece j de 0, não de i
-            if (matriz[i][j] != 0) {
-                writer.println((i + 1) + " " + (j + 1) + " " + matriz[i][j]);
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) { // Comece j de 0, não de i
+                if (matriz[i][j] != 0) {
+                    writer.println((i + 1) + " " + (j + 1) + " " + matriz[i][j]);
+                }
             }
         }
-    }
-    writer.close();
+        writer.close();
     }
 
-    /**Este método não importa grafos rotulados ainda.
+    /**
+     * Este método não importa grafos rotulados ainda.
      * 
      */
     @Override
@@ -225,24 +235,23 @@ public class GrafoMatrizAdjacencia implements IGrafo{
                 int numVertices = Integer.parseInt(partes[1]);
                 this.matriz = new int[numVertices][numVertices];
                 continue;
-        }
-        if (partes[0].equals("*Edges")) {
-            while ((linha = reader.readLine()) != null) {
-                partes = linha.split(" ");
-                int v1 = Integer.parseInt(partes[0]) - 1; // Pajek começa a contagem em 1
-                int v2 = Integer.parseInt(partes[1]) - 1; // Pajek começa a contagem em 1
-                int peso = partes.length > 2 ? Integer.parseInt(partes[2]) : 1; // Pega o peso se existir, senão assume 1
-                matriz[v1][v2] = peso; // Adicione a aresta ao seu grafo aqui
-                if (!direcionado) {
-                    matriz[v2][v1] = peso; // Para grafos não direcionados
+            }
+            if (partes[0].equals("*Edges")) {
+                while ((linha = reader.readLine()) != null) {
+                    partes = linha.split(" ");
+                    int v1 = Integer.parseInt(partes[0]) - 1; // Pajek começa a contagem em 1
+                    int v2 = Integer.parseInt(partes[1]) - 1; // Pajek começa a contagem em 1
+                    int peso = partes.length > 2 ? Integer.parseInt(partes[2]) : 1; // Pega o peso se existir, senão
+                                                                                    // assume 1
+                    matriz[v1][v2] = peso; // Adicione a aresta ao seu grafo aqui
+                    if (!direcionado) {
+                        matriz[v2][v1] = peso; // Para grafos não direcionados
+                    }
                 }
             }
         }
+        reader.close();
     }
-    reader.close();
-    }
-
-    
 
     @Override
     public void imprimeGrafo() {
@@ -313,5 +322,5 @@ public class GrafoMatrizAdjacencia implements IGrafo{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'AEstrela'");
     }
-    
+
 }
