@@ -66,7 +66,7 @@ public class Vertice {
      * @param destino Vértice de destino
      */
     public void addAresta(Vertice destino, int idAresta) {
-        this.arestas.add(destino.id, new Aresta(-1, destino, idAresta));
+        this.arestas.add(new Aresta(-1, destino, idAresta));
     }
 
     public void ponderarAresta(Vertice destino,double pesoVertice) {

@@ -18,12 +18,9 @@ public interface IGrafo<T> {
 
     boolean verificaAdjacencia(int verticeOrigem, int verticeDestino);
 
-    boolean verificaAdjacenciaArestas(int aresta1, int aresta2);
-
     boolean verificaIncidencia(int vertice, int aresta);
 
     boolean verificaExistenciaArestas(int vertice1, int vertice2);
-
     int getNumeroVertices();
 
     int getNumeroArestas();
@@ -36,7 +33,7 @@ public interface IGrafo<T> {
 
     void exportarGrafo(String nomeArquivo); // Ponto extra
 
-    T importarGrafo(); // Ponto extra
+    IGrafo<T> importarGrafo(); // Ponto extra
 
     void dijkstra();
 

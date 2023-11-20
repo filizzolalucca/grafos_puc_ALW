@@ -1,3 +1,12 @@
+import exceptions.NotFoundException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,17 +21,16 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     }
 
     //ALEKS
-    public boolean inserirVertice(int rotulo){
-        Vertice novo = new Vertice(rotulo);
+    public boolean inserirVertice(int id){
+        Vertice novo = new Vertice(id);
         return this.adjacencia.add(novo);
     }
 
     //ALEKS
     @Override
     public void inserirAresta(int verticeOrigem, int verticeDestino, int idAresta) {
-        //Coloquei um id na aresta por conto do metodo verificaIncidencia que busca uma aresta especifica,a aceito sugestoes
-        var origem = this.adjacencia.get(verticeOrigem);
-        var destino = this.adjacencia.get(verticeDestino);
+        var origem = this.getVertice(verticeOrigem);
+        var destino = this.getVertice(verticeDestino);
 
         origem.addAresta(destino, idAresta);
         if(!this.direcionado) {
@@ -47,7 +55,7 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
     //LUCCA
     @Override
     public void rotularVertice(int vertice, String rotulo) {
-        var origem = this.adjacencia.get(vertice);
+        var origem = this.getVertice(vertice);
         origem.setRotulo(rotulo);
     }
 
@@ -73,13 +81,6 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
         var origem = this.adjacencia.get(verticeOrigem);
         var destino = this.adjacencia.get(verticeDestino);
         return origem.existeAresta(verticeDestino) || destino.existeAresta(verticeOrigem);
-    }
-
-    //ALEKS
-    @Override
-    public boolean verificaAdjacenciaArestas(int aresta1, int aresta2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'verificaAdjacenciaArestas'");
     }
 
     // LUCCA VER COM WEMERSON -> Ver com  alek
@@ -166,7 +167,6 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
             vizinhanca.add(aresta.destino());
         }
         return vizinhanca;
-
     }
 
     // ATÉ AQUI
@@ -209,9 +209,53 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
 
     //ALEKS
     @Override
-    public List<Vertice> importarGrafo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'importarGrafo'");
+    public IGrafo<List<Vertice>> importarGrafo() {
+        List<Vertice> vertices = new ArrayList<>();
+
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(new File("src/grafo.gefl"));
+
+            NodeList nodeList = document.getElementsByTagName("node");
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    int id = Integer.parseInt(element.getAttribute("id"));
+                    String rotulo = element.getAttribute("label");
+
+                    Vertice vertice = new Vertice(id);
+                    vertice.setRotulo(rotulo);
+
+                    this.adjacencia.add(vertice);
+                }
+            }
+
+            // Agora você tem a lista de vértices, você precisa lidar com as arestas
+            // O código abaixo é um exemplo básico e você precisará ajustá-lo conforme necessário
+
+            NodeList edgeList = document.getElementsByTagName("edge");
+
+            for (int j = 0; j < edgeList.getLength(); j++) {
+                Node node = edgeList.item(j);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    int sourceId = Integer.parseInt(element.getAttribute("source"));
+                    int targetId = Integer.parseInt(element.getAttribute("target"));
+                    int id = Integer.parseInt(element.getAttribute("id"));
+                    this.getVertice(sourceId).addAresta(this.getVertice(targetId), id);
+                }
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao importar o grafo GEXF: " + e.getMessage());
+        }
+        this.adjacencia=vertices;
+        return this;
     }
 
     @Override
@@ -281,7 +325,7 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
                 return vertice;
             }
         }
-        throw new RuntimeException("Vertice nao encontrado");
+        throw new NotFoundException("Vertice "+ id +" nao encontrado");
     }
 
     private Vertice getVertice(String rotulo){
@@ -291,7 +335,20 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
                 return vertice;
             }
         }
-        throw new RuntimeException("Vertice nao encontrado");
+        throw new NotFoundException("Vertice "+ rotulo +" nao encontrado");
+    }
+    @Override
+    public String toString() {
+        String r = "";
+        for (Vertice u : adjacencia) {
+            r += u.getRotulo() + u.getId()+ " -> ";
+            for (Aresta e : u.getArestas()) {
+                Vertice v = e.destino();
+                r += v.getRotulo() + ", ";
+            }
+            r += "\n";
+        }
+        return r;
     }
 
 }

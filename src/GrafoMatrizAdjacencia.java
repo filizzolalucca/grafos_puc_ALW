@@ -45,21 +45,14 @@ public class GrafoMatrizAdjacencia implements IGrafo{
     }
 
     @Override
-    public boolean verificaAdjacenciaArestas(int aresta1, int aresta2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'verificaAdjacenciaArestas'");
-    }
-
-    @Override
     public boolean verificaIncidencia(int vertice, int aresta) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'verificaIncidencia'");
     }
 
     @Override
-    public boolean verificaExistenciaArestas() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'verificaExistenciaArestas'");
+    public boolean verificaExistenciaArestas(int vertice1, int vertice2) {
+        return false;
     }
 
     @Override
@@ -99,9 +92,59 @@ public class GrafoMatrizAdjacencia implements IGrafo{
     }
 
     @Override
-    public int[][] importarGrafo() {
+    public IGrafo<List<Vertice>> importarGrafo() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'importarGrafo'");
     }
-    
+
+    @Override
+    public void dijkstra() {
+
+    }
+
+    @Override
+    public void bellmanFord() {
+
+    }
+
+    @Override
+    public void floydWarshall() {
+
+    }
+
+    @Override
+    public int dijkstraMenorDistanciaUmParaTodos() {
+        return 0;
+    }
+
+    @Override
+    public int dijkstraMenorDistanciaTodosParaTodos() {
+        return 0;
+    }
+
+    @Override
+    public int bellmanFordMenorDistanciaUmParaTodos() {
+        return 0;
+    }
+
+    @Override
+    public int bellmanFordMenorDistanciaTodosParaTodos() {
+        return 0;
+    }
+
+    @Override
+    public int floydWarshallMenorDistanciaUmParaTodos() {
+        return 0;
+    }
+
+    @Override
+    public int floydWarshallMenorDistanciaTodosParaTodos() {
+        return 0;
+    }
+
+    @Override
+    public void AEstrela() {
+
+    }
+
 }
