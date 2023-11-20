@@ -26,20 +26,20 @@ public class App {
             // grafo2.rotularVertice(3, "Weme");
             // grafo2.rotularVertice(6, "Weme");
 
-            grafo2.importarGrafo();
+            grafo2.importarGrafo("src/grafo.gefl");
 
-            IGrafo grafoM = new GrafoMatrizAdjacencia(5, true);
+            var grafoM = new GrafoMatrizAdjacencia(5, true);
 
             grafoM.inserirAresta(0, 2);
             grafoM.inserirAresta(0, 3);
-            grafoM.inserirAresta(1, 0);
+            grafoM.inserirAresta(1,0);
             grafoM.inserirAresta(1, 3);
             grafoM.inserirAresta(2, 3);
             grafoM.inserirAresta(3, 4);
 
             grafoM.imprimeGrafo();
 
-            grafoM.exportarGrafo("D:\\Faculdade\\Algoritmos em Grafos\\Grafo\\grafoexportado.net");
+            //grafoM.exportarGrafo("D:\\Faculdade\\Algoritmos em Grafos\\Grafo\\grafoexportado.net");
         } catch (NotFoundException err) {
             System.out.println(err.getMessage());
         }

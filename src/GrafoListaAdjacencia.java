@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
+public class GrafoListaAdjacencia implements IGrafo<Vertice> {
     private List<Vertice> adjacencia;
     private boolean direcionado;
 
@@ -77,15 +77,20 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
 
     //ALEKS
     @Override
-    public boolean verificaAdjacencia(int verticeOrigem, int verticeDestino) {
+    public boolean verificaAdjacenciaVertice(int verticeOrigem, int verticeDestino) {
         var origem = this.adjacencia.get(verticeOrigem);
         var destino = this.adjacencia.get(verticeDestino);
         return origem.existeAresta(verticeDestino) || destino.existeAresta(verticeOrigem);
     }
 
+    @Override
+    public boolean verificaAdjacenciaArestas(int vertice1, int vertice2) {
+        return verificaAdjacenciaVertice(vertice1,vertice2);
+    }
+
     // LUCCA VER COM WEMERSON -> Ver com  alek
     @Override
-    public boolean verificaIncidencia(int vertice, int aresta) {
+    public boolean verificaIncidenciaArestaVertice(int vertice, int aresta) {
         Vertice origem = this.adjacencia.get(vertice);
 
         //Verificando se a aresta informada pelo id chega no vertice origem
@@ -169,9 +174,6 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
         return vizinhanca;
     }
 
-    // ATÉ AQUI
-
-    //ALEKS
     @Override
     public void exportarGrafo(String nomeArquivo) {
         try (FileWriter writer = new FileWriter(nomeArquivo)) {
@@ -207,15 +209,28 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
         }
     }
 
+    @Override
+    public void imprimeGrafo() {
+        for(Vertice vertice : adjacencia){
+
+            String linha = vertice.getRotulo() + " -> ";
+            for (Aresta aresta : vertice.getArestas()) {
+                linha +=  aresta.destino().getRotulo() + " ->";
+            }
+            linha += "|";
+            System.out.println(linha);
+        }
+    }
+
     //ALEKS
     @Override
-    public IGrafo<List<Vertice>> importarGrafo() {
+    public void importarGrafo(String arquivo) {
         List<Vertice> vertices = new ArrayList<>();
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(new File("src/grafo.gefl"));
+            Document document = builder.parse(new File(arquivo));
 
             NodeList nodeList = document.getElementsByTagName("node");
 
@@ -255,7 +270,6 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
             throw new RuntimeException("Erro ao importar o grafo GEXF: " + e.getMessage());
         }
         this.adjacencia=vertices;
-        return this;
     }
 
     @Override
@@ -317,6 +331,8 @@ public class GrafoListaAdjacencia implements IGrafo<List<Vertice>> {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'AEstrela'");
     }
+
+
 
     private Vertice getVertice(int id){
         for (Vertice vertice:

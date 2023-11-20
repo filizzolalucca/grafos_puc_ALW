@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GrafoMatrizAdjacencia implements IGrafo {
+public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
 
     private int[][] matriz;
     private boolean direcionado;
@@ -30,13 +30,17 @@ public class GrafoMatrizAdjacencia implements IGrafo {
     }
 
     @Override
-    public void inserirAresta(int verticeOrigem, int verticeDestino) {
+    public void inserirAresta(int verticeOrigem, int verticeDestino, int idAresta) {
         if (verticeOrigem >= 0 && verticeDestino >= 0 && verticeOrigem < matriz.length
                 && verticeDestino < matriz.length) {
             matriz[verticeOrigem][verticeDestino] = 1;
             totalArestas++;
         }
     }
+    public void inserirAresta(int verticeOrigem, int verticeDestino) {
+        inserirAresta(verticeOrigem,verticeDestino,0);
+    }
+
 
     @Override
     public void removerAresta(int verticeOrigem, int verticeDestino) {
@@ -117,7 +121,7 @@ public class GrafoMatrizAdjacencia implements IGrafo {
     }
 
     @Override
-    public boolean verificaIncidenciaArestaVertice(int vertice) {
+    public boolean verificaIncidenciaArestaVertice(int vertice, int aresta) {
         return true;
     }
 

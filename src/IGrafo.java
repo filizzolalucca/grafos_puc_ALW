@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface IGrafo {
+public interface IGrafo<T> {
     // Manipulação
     // void criarGrafo(int numVertices); -> precisa?
 
@@ -22,7 +22,7 @@ public interface IGrafo {
 
     boolean verificaAdjacenciaArestas(int vertice1, int vertice2);
 
-    boolean verificaIncidenciaArestaVertice(int vertice);
+    boolean verificaIncidenciaArestaVertice(int vertice, int aresta);
 
     boolean verificaExistenciaArestas(int verticeOrigem, int verticeDestino);
 
@@ -34,7 +34,7 @@ public interface IGrafo {
 
     boolean isGrafoCompleto();
 
-    List<Vertice> getVizinhanca(int vertice);
+    List<T> getVizinhanca(int vertice);
 
     void exportarGrafo(String caminho) throws IOException; // Ponto extra
 
