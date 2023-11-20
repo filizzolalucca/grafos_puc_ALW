@@ -1,6 +1,8 @@
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public interface IGrafo<T> {
+public interface IGrafo {
     // Manipulação
     // void criarGrafo(int numVertices); -> precisa?
 
@@ -16,13 +18,13 @@ public interface IGrafo<T> {
 
     void rotularAresta(int verticeOrigem, int verticeDestino, String rotulo);
 
-    boolean verificaAdjacencia(int verticeOrigem, int verticeDestino);
+    boolean verificaAdjacenciaVertice(int verticeOrigem, int verticeDestino);
 
-    boolean verificaAdjacenciaArestas(int aresta1, int aresta2);
+    boolean verificaAdjacenciaArestas(int vertice1, int vertice2);
 
-    boolean verificaIncidencia(int vertice, int aresta);
+    boolean verificaIncidenciaArestaVertice(int vertice);
 
-    boolean verificaExistenciaArestas(int vertice1, int vertice2);
+    boolean verificaExistenciaArestas(int verticeOrigem, int verticeDestino);
 
     int getNumeroVertices();
 
@@ -34,9 +36,9 @@ public interface IGrafo<T> {
 
     List<Vertice> getVizinhanca(int vertice);
 
-    void exportarGrafo(); // Ponto extra
+    void exportarGrafo(String caminho) throws IOException; // Ponto extra
 
-    T importarGrafo(); // Ponto extra
+    void importarGrafo(String arquivo) throws IOException; // Ponto extra
 
     void dijkstra();
 
@@ -57,4 +59,6 @@ public interface IGrafo<T> {
     int floydWarshallMenorDistanciaTodosParaTodos();
 
     void AEstrela(); // Ponto extra
+
+    void imprimeGrafo();
 }
