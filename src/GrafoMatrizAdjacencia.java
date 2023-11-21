@@ -120,6 +120,7 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
         return true;
     }
 
+    //Método é realmente necessário? Visto que não tenho dado de aresta. Possivel contorno: receber dois vertices(que formam aresta) e ver arestas ligadas a eles.
     @Override
     public boolean verificaIncidenciaArestaVertice(int vertice, int aresta) {
         return true;
