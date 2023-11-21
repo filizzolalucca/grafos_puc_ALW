@@ -39,7 +39,7 @@ public class App {
 
             grafoM.imprimeGrafo();
 
-            //grafoM.exportarGrafo("D:\\Faculdade\\Algoritmos em Grafos\\Grafo\\grafoexportado.net");
+            grafoM.exportarGrafo("src/grafoexportado.net");
         } catch (NotFoundException err) {
             System.out.println(err.getMessage());
         }
