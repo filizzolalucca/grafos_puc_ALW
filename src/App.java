@@ -7,27 +7,27 @@ public class App {
 
         try {
 
-            int[][] grafo = {
-                    { 0, 0, 1, 1, 0, 1 },
-                    { 0, 0, 1, 1, 0, 1 },
-                    { 1, 1, 0, 1, 1, 0 },
-                    { 1, 1, 1, 0, 1, 0 },
-                    { 0, 0, 1, 1, 0, 0 },
-                    { 1, 1, 0, 0, 0, 0 }
-            };
+            System.out.println("Lista de adjacencia:");
 
-            var grafo2 = new GrafoListaAdjacencia();
-            // grafo2.inserirVertice(1);
-            // grafo2.inserirVertice(2);
-            // grafo2.inserirVertice(3);
-            // grafo2.inserirVertice(4);
-            // grafo2.rotularVertice(1, "Aleks");
-            // grafo2.rotularVertice(2, "Lucca");
-            // grafo2.rotularVertice(3, "Weme");
-            // grafo2.rotularVertice(6, "Weme");
+            var grafo2 = new GrafoListaAdjacencia(true);
+            grafo2.inserirVertice(1);
+            grafo2.inserirVertice(2);
+            grafo2.inserirVertice(3);
+            grafo2.inserirVertice(4);
+            grafo2.rotularVertice(1, "A");
+            grafo2.rotularVertice(2, "B");
+            grafo2.rotularVertice(3, "C");
+            grafo2.rotularVertice(4, "D");
+
+            grafo2.inserirAresta(1,2,1);
+            grafo2.inserirAresta(1,3,2);
+            grafo2.inserirAresta(2,4,3);
+            grafo2.inserirAresta(3,4,4);
+            grafo2.imprimeGrafo();
 
             grafo2.importarGrafo("src/grafo.gefl");
 
+            System.out.println("Matriz de adjacencia");
             var grafoM = new GrafoMatrizAdjacencia(5, true);
 
             grafoM.inserirAresta(0, 2);

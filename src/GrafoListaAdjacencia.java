@@ -16,7 +16,8 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
     private List<Vertice> adjacencia;
     private boolean direcionado;
 
-    public GrafoListaAdjacencia() {
+    public GrafoListaAdjacencia(boolean direcionado) {
+        this.direcionado = direcionado;
         adjacencia = new ArrayList<>();
     }
 
