@@ -37,9 +37,22 @@ public class App {
             grafoM.inserirAresta(2, 3);
             grafoM.inserirAresta(3, 4);
 
+            grafoM.ponderarVertice(1, 5);
+            grafoM.ponderarVertice(2, 6);
+            grafoM.ponderarVertice(2, 7);
+
+            grafoM.rotularVertice(0, "vertice 1");
+            grafoM.rotularVertice(1, "vertice 2");
+            grafoM.rotularVertice(2, "vertice 3");
+
+            // Impressão da rotulação incorreta, ainda não consegui resolver!!!
+            grafoM.rotularAresta(1,0, "aresta 1 - 0");
+            grafoM.rotularAresta(0,3, "aresta 0 - 3");
+
+
             grafoM.imprimeGrafo();
 
-            //grafoM.exportarGrafo("D:\\Faculdade\\Algoritmos em Grafos\\Grafo\\grafoexportado.net");
+            grafoM.exportarGrafo("src/grafoexportado.net");
         } catch (NotFoundException err) {
             System.out.println(err.getMessage());
         }

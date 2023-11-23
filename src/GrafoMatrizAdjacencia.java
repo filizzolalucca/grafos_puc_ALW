@@ -80,9 +80,12 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
                     && verticeDestino < matriz.length) {
                 String chave = verticeOrigem + "-" + verticeDestino;
                 rotulosArestas.put(chave, rotulo);
+                System.out.println("Rótulo adicionado com sucesso: " + chave + " -> " + rotulo);
+            } else {
+                System.out.println("Aresta inexistente ou inválida");
             }
         } else {
-            System.out.println("Aresta inexistente ou inválida");
+            System.out.println("Aresta não adjacente");
         }
     }
 
@@ -120,6 +123,7 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
         return true;
     }
 
+    //Método é realmente necessário? Visto que não tenho dado de aresta. Possivel contorno: receber dois vertices(que formam aresta) e ver arestas ligadas a eles.
     @Override
     public boolean verificaIncidenciaArestaVertice(int vertice, int aresta) {
         return true;
@@ -204,25 +208,26 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
     @Override
 
     public void exportarGrafo(String caminho) throws IOException {
-        PrintWriter writer = new PrintWriter(new FileWriter(caminho));
-        writer.println("*Vertices " + matriz.length);
+        PrintWriter escreve = new PrintWriter(new FileWriter(caminho));
+        escreve.println("*Vertices " + matriz.length);
         for (int i = 0; i < matriz.length; i++) {
-            writer.println((i + 1));
+            escreve.println((i + 1) + "  \""+ rotulosVertices[i] + "\" " + pesosVertices[i]);
         }
 
         if (direcionado)
-            writer.println("*Arcs");
+            escreve.println("*Arcs");
         else
-            writer.println("*Edges");
+            escreve.println("*Edges");
 
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) { // Comece j de 0, não de i
                 if (matriz[i][j] != 0) {
-                    writer.println((i + 1) + " " + (j + 1) + " " + matriz[i][j]);
+                    String rotulo = i+ "-"+ j;
+                    escreve.println((i + 1) + " " + (j + 1) + " " + matriz[i][j] + " \""+ rotulosArestas.get(rotulo)  + "\"");
                 }
             }
         }
-        writer.close();
+        escreve.close();
     }
 
     /**
