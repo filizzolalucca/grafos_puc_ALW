@@ -45,7 +45,6 @@ public class App {
             grafoM.rotularVertice(1, "vertice 2");
             grafoM.rotularVertice(2, "vertice 3");
 
-            // Impressão da rotulação incorreta, ainda não consegui resolver!!!
             grafoM.rotularAresta(1,0, "aresta 1 - 0");
             grafoM.rotularAresta(0,3, "aresta 0 - 3");
 
