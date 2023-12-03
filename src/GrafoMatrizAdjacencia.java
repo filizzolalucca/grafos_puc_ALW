@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,20 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
     private Map<String, String> rotulosArestas = new HashMap<>();
     private int totalArestas = 0;
 
-    GrafoMatrizAdjacencia() {
+    GrafoMatrizAdjacencia(int[][] MatrizAdjacencia, boolean direcionado) {
+        int linhas = MatrizAdjacencia.length;
+        int colunas = MatrizAdjacencia[0].length;
+        this.direcionado = direcionado;
+
+        if (linhas == colunas) {
+            this.matriz = new int[linhas][colunas];
+
+            for (int i = 0; i < linhas; i++) {
+                for (int j = 0; j < colunas; j++) {
+                    this.matriz[i][j] = MatrizAdjacencia[i][j];
+                }
+            }
+        }
 
     }
 
@@ -37,10 +51,10 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
             totalArestas++;
         }
     }
-    public void inserirAresta(int verticeOrigem, int verticeDestino) {
-        inserirAresta(verticeOrigem,verticeDestino,0);
-    }
 
+    public void inserirAresta(int verticeOrigem, int verticeDestino) {
+        inserirAresta(verticeOrigem, verticeDestino, 0);
+    }
 
     @Override
     public void removerAresta(int verticeOrigem, int verticeDestino) {
@@ -123,7 +137,9 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
         return true;
     }
 
-    //Método é realmente necessário? Visto que não tenho dado de aresta. Possivel contorno: receber dois vertices(que formam aresta) e ver arestas ligadas a eles.
+    // Método é realmente necessário? Visto que não tenho dado de aresta. Possivel
+    // contorno: receber dois vertices(que formam aresta) e ver arestas ligadas a
+    // eles.
     @Override
     public boolean verificaIncidenciaArestaVertice(int vertice, int aresta) {
         return true;
@@ -211,7 +227,7 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
         PrintWriter escreve = new PrintWriter(new FileWriter(caminho));
         escreve.println("*Vertices " + matriz.length);
         for (int i = 0; i < matriz.length; i++) {
-            escreve.println((i + 1) + "  \""+ rotulosVertices[i] + "\" " + pesosVertices[i]);
+            escreve.println((i + 1) + "  \"" + rotulosVertices[i] + "\" " + pesosVertices[i]);
         }
 
         if (direcionado)
@@ -222,8 +238,9 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) { // Comece j de 0, não de i
                 if (matriz[i][j] != 0) {
-                    String rotulo = i+ "-"+ j;
-                    escreve.println((i + 1) + " " + (j + 1) + " " + matriz[i][j] + " \""+ rotulosArestas.get(rotulo)  + "\"");
+                    String rotulo = i + "-" + j;
+                    escreve.println(
+                            (i + 1) + " " + (j + 1) + " " + matriz[i][j] + " \"" + rotulosArestas.get(rotulo) + "\"");
                 }
             }
         }
@@ -274,21 +291,126 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
     }
 
     @Override
-    public void dijkstra() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'dijkstra'");
+    public void dijkstra(int verticeOrigem) {
+        int vertices = matriz.length;
+        int[] distancia = new int[vertices];
+        boolean[] visitados = new boolean[vertices];
+        int infinito = Integer.MAX_VALUE - 1;
+        int[] antecessor = new int[vertices];
+
+        Arrays.fill(distancia, infinito);
+        Arrays.fill(visitados, false);
+        distancia[verticeOrigem] = 0;
+
+        for (int i = 0; i < vertices - 1; i++) {
+            // Encontrar o vértice com a menor distância ainda não visitado
+            int u = distaciaMinima(distancia, visitados);
+
+            // Marcar o vértice como visitado
+            visitados[u] = true;
+
+            // Atualizar as distâncias dos vértices adjacentes ao vértice escolhido
+            for (int v = 0; v < vertices; v++) {
+                if (!visitados[v] && matriz[u][v] != 0 && distancia[u] != infinito &&
+                        distancia[u] + matriz[u][v] < distancia[v]) {
+                    distancia[v] = distancia[u] + matriz[u][v];
+                    antecessor[v] = u;
+                }
+            }
+
+        }
+
+        // Imprime as distâncias mínimas
+        System.out.println("Distâncias mínimas a partir do vértice de origem:");
+        for (int i = 0; i < distancia.length; i++) {
+            System.out.println("Vértice " + i + ": " + distancia[i] + " antecessor:" + antecessor[i]);
+        }
+    }
+
+    private int distaciaMinima(int[] distancia, boolean[] visitados) {
+        int minimo = Integer.MAX_VALUE - 1;
+        int minIndex = -1;
+
+        for (int v = 0; v < distancia.length; v++) {
+            if (!visitados[v] && distancia[v] <= minimo) {
+                minimo = distancia[v];
+                minIndex = v;
+            }
+        }
+        return minIndex;
     }
 
     @Override
-    public void bellmanFord() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'bellmanFord'");
+    public void bellmanFord(int verticeOrigem) {
+        int vertices = matriz.length;
+        int[] distancia = new int[vertices];
+        int[] antecessor = new int[vertices];
+        int infinito = Integer.MAX_VALUE - 1;
+
+        Arrays.fill(distancia, infinito);
+        distancia[verticeOrigem] = 0;
+
+        // Relaxamento das arestas repetidamente
+        for (int i = 0; i < vertices - 1; i++) {
+            for (int u = 0; u < vertices; u++) {
+                for (int v = 0; v < vertices; v++) {
+                    if (matriz[u][v] != 0 && distancia[u] != infinito && distancia[u] + matriz[u][v] < distancia[v]) {
+                        distancia[v] = distancia[u] + matriz[u][v];
+                        antecessor[v] = u;
+                    }
+                }
+            }
+        }
+
+        // Verifica se há ciclo de peso negativo
+        for (int u = 0; u < vertices; u++) {
+            for (int v = 0; v < vertices; v++) {
+                if (matriz[u][v] != 0 && distancia[u] != infinito && distancia[u] + matriz[u][v] < distancia[v]) {
+                    System.out.println("Há um ciclo de peso negativo, impossibilitando o algoritmo");
+                    return;
+                }
+            }
+        }
+
+        // Imprime as distâncias mínimas
+        System.out.println("Distâncias mínimas a partir do vértice de origem:");
+        for (int i = 0; i < distancia.length; i++) {
+            System.out.println("Vértice " + i + ": " + distancia[i] + " antecessor:" + antecessor[i]);
+        }
     }
 
     @Override
     public void floydWarshall() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'floydWarshall'");
+        int vertices = matriz.length;
+        int[][] distancias = new int[vertices][vertices];
+
+        // Inicialização da matriz de distâncias
+        for (int i = 0; i < vertices; i++) {
+            for (int j = 0; j < vertices; j++) {
+                distancias[i][j] = matriz[i][j];
+            }
+        }
+
+        // Algoritmo de Floyd-Warshall
+        for (int k = 0; k < vertices; k++) {
+            for (int i = 0; i < vertices; i++) {
+                for (int j = 0; j < vertices; j++) {
+                    if (distancias[i][k] != 0 && distancias[k][j] != 0 &&
+                            (distancias[i][j] == 0 || distancias[i][j] > distancias[i][k] + distancias[k][j])) {
+                        distancias[i][j] = distancias[i][k] + distancias[k][j];
+                    }
+                }
+            }
+        }
+
+        // Imprime as distâncias mínimas
+        System.out.println("Matriz de distâncias mínimas entre todos os pares de vértices:");
+        for (int i = 0; i < vertices; i++) {
+            for (int j = 0; j < vertices; j++) {
+                System.out.print(distancias[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
     @Override
