@@ -10,7 +10,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 public class GrafoListaAdjacencia implements IGrafo<Vertice> {
     private List<Vertice> adjacencia;
@@ -21,54 +26,54 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
         adjacencia = new ArrayList<>();
     }
 
-    //ALEKS
-    public boolean inserirVertice(int id){
+    // ALEKS
+    public boolean inserirVertice(int id) {
         Vertice novo = new Vertice(id);
         return this.adjacencia.add(novo);
     }
 
-    //ALEKS
+    // ALEKS
     @Override
     public void inserirAresta(int verticeOrigem, int verticeDestino, int idAresta) {
         var origem = this.getVertice(verticeOrigem);
         var destino = this.getVertice(verticeDestino);
 
         origem.addAresta(destino, idAresta);
-        if(!this.direcionado) {
+        if (!this.direcionado) {
             destino.addAresta(origem, idAresta);
         }
     }
 
-    //ALEKS
+    // ALEKS
     @Override
     public void removerAresta(int verticeOrigem, int verticeDestino) {
         var origem = this.adjacencia.get(verticeOrigem);
         origem.removeAresta(verticeDestino);
     }
 
-    //LUCCA
+    // LUCCA
     @Override
     public void ponderarVertice(int verticeOrigem, int peso) {
         var origem = this.adjacencia.get(verticeOrigem);
         origem.setPesoVertice(peso);
     }
 
-    //LUCCA
+    // LUCCA
     @Override
     public void rotularVertice(int vertice, String rotulo) {
         var origem = this.getVertice(vertice);
         origem.setRotulo(rotulo);
     }
 
-    //LUCCA
+    // LUCCA
     @Override
     public void ponderarAresta(int verticeOrigem, int verticeDestino, int peso) {
-        var origem = this.adjacencia.get(verticeOrigem);
-        var destino = this.adjacencia.get(verticeDestino);
+        var origem = this.getVertice(verticeOrigem);
+        var destino = this.getVertice(verticeDestino);
         origem.ponderarAresta(destino, peso);
     }
 
-    //LUCCA
+    // LUCCA
     @Override
     public void rotularAresta(int verticeOrigem, int verticeDestino, String rotulo) {
         var origem = this.adjacencia.get(verticeOrigem);
@@ -76,7 +81,7 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
         origem.rotularAresta(destino, rotulo);
     }
 
-    //ALEKS
+    // ALEKS
     @Override
     public boolean verificaAdjacenciaVertice(int verticeOrigem, int verticeDestino) {
         var origem = this.adjacencia.get(verticeOrigem);
@@ -86,20 +91,20 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
 
     @Override
     public boolean verificaAdjacenciaArestas(int vertice1, int vertice2) {
-        return verificaAdjacenciaVertice(vertice1,vertice2);
+        return verificaAdjacenciaVertice(vertice1, vertice2);
     }
 
-    // LUCCA VER COM WEMERSON -> Ver com  alek
+    // LUCCA VER COM WEMERSON -> Ver com alek
     @Override
     public boolean verificaIncidenciaArestaVertice(int vertice, int aresta) {
         Vertice origem = this.adjacencia.get(vertice);
 
-        //Verificando se a aresta informada pelo id chega no vertice origem
-        for (Vertice verticeX : this.adjacencia ) {
-            if(verticeX.getId() != origem.getId()) {
-                if(verticeX.existeAresta(origem.getId())) {
-                    for( Aresta aresta1 : verticeX.getArestas()) {
-                        if(aresta1.getId() == aresta) {
+        // Verificando se a aresta informada pelo id chega no vertice origem
+        for (Vertice verticeX : this.adjacencia) {
+            if (verticeX.getId() != origem.getId()) {
+                if (verticeX.existeAresta(origem.getId())) {
+                    for (Aresta aresta1 : verticeX.getArestas()) {
+                        if (aresta1.getId() == aresta) {
                             if (aresta1.destino().getId() == origem.getId()) {
                                 return true;
                             }
@@ -109,11 +114,11 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
             }
         }
 
-        //Verifico se a aresta informada pelo id sai do vertice origem
-        for(Aresta arestaOrigem : origem.getArestas()) {
-            if(arestaOrigem.getId() == aresta) {
+        // Verifico se a aresta informada pelo id sai do vertice origem
+        for (Aresta arestaOrigem : origem.getArestas()) {
+            if (arestaOrigem.getId() == aresta) {
                 if (arestaOrigem.destino().getId() == origem.getId()) {
-                    return  true;
+                    return true;
                 }
             }
         }
@@ -126,24 +131,23 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
         var v1 = this.adjacencia.get(vertice1);
         var v2 = this.adjacencia.get(vertice2);
 
-        return  v1.existeAresta(v2.getId()) || v2.existeAresta(v1.getId());
+        return v1.existeAresta(v2.getId()) || v2.existeAresta(v1.getId());
     }
 
-    //ALEKS
+    // ALEKS
     @Override
     public int getNumeroVertices() {
         return adjacencia.size();
     }
 
-    //ALEKS
+    // ALEKS
     @Override
     public int getNumeroArestas() {
         int numArestas = 0;
-        for (Vertice vertice:
-             this.adjacencia) {
+        for (Vertice vertice : this.adjacencia) {
             numArestas += vertice.getArestas().size();
         }
-       return numArestas;
+        return numArestas;
     }
 
     @Override
@@ -151,16 +155,16 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
         return adjacencia.isEmpty();
     }
 
-    //LUCCA
+    // LUCCA
     @Override
     public boolean isGrafoCompleto() {
         int contArestas = 0;
         int numVertices = this.adjacencia.size();
-        for(Vertice vertice : this.adjacencia) {
+        for (Vertice vertice : this.adjacencia) {
             contArestas += vertice.getArestas().size();
         }
 
-        return contArestas == ((numVertices - 1) *numVertices)/ 2;
+        return contArestas == ((numVertices - 1) * numVertices) / 2;
     }
 
     @Override
@@ -168,8 +172,7 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
         var verticeOrigem = this.getVertice(vertice);
         var arestas = verticeOrigem.getArestas();
         List<Vertice> vizinhanca = new ArrayList<>();
-        for (Aresta aresta:
-             arestas) {
+        for (Aresta aresta : arestas) {
             vizinhanca.add(aresta.destino());
         }
         return vizinhanca;
@@ -195,8 +198,9 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
             for (Vertice verticeOrigem : adjacencia) {
                 for (Aresta aresta : verticeOrigem.getArestas()) {
                     Vertice verticeDestino = aresta.destino();
-                    double peso = aresta.peso();  // Obtém o peso da aresta
-                    writer.write("<edge id=\"" + idAresta++ + "\" source=\"" + verticeOrigem.getId() + "\" target=\"" + verticeDestino.getId() + "\" weight=\"" + peso + "\"/>\n");
+                    double peso = aresta.peso(); // Obtém o peso da aresta
+                    writer.write("<edge id=\"" + idAresta++ + "\" source=\"" + verticeOrigem.getId() + "\" target=\""
+                            + verticeDestino.getId() + "\" weight=\"" + peso + "\"/>\n");
                 }
             }
             writer.write("</edges>\n");
@@ -212,18 +216,18 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
 
     @Override
     public void imprimeGrafo() {
-        for(Vertice vertice : adjacencia){
+        for (Vertice vertice : adjacencia) {
 
             String linha = vertice.getRotulo() + " -> ";
             for (Aresta aresta : vertice.getArestas()) {
-                linha +=  aresta.destino().getRotulo() + " ->";
+                linha += aresta.destino().getRotulo() + " ->";
             }
             linha += "|";
             System.out.println(linha);
         }
     }
 
-    //ALEKS
+    // ALEKS
     @Override
     public void importarGrafo(String arquivo) {
         List<Vertice> vertices = new ArrayList<>();
@@ -251,7 +255,8 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
             }
 
             // Agora você tem a lista de vértices, você precisa lidar com as arestas
-            // O código abaixo é um exemplo básico e você precisará ajustá-lo conforme necessário
+            // O código abaixo é um exemplo básico e você precisará ajustá-lo conforme
+            // necessário
 
             NodeList edgeList = document.getElementsByTagName("edge");
 
@@ -270,7 +275,7 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
         } catch (Exception e) {
             throw new RuntimeException("Erro ao importar o grafo GEXF: " + e.getMessage());
         }
-        this.adjacencia=vertices;
+        this.adjacencia = vertices;
     }
 
     @Override
@@ -280,9 +285,53 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
     }
 
     @Override
-    public void bellmanFord() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'bellmanFord'");
+    public void bellmanFord(int verticeOrigem) {
+        // Find the minimum vertex ID
+        int minVertexId = Integer.MAX_VALUE;
+        for (Vertice v : adjacencia) {
+            if (v.getId() < minVertexId) {
+                minVertexId = v.getId();
+            }
+        }
+
+        // Adjust indices based on the minimum vertex ID
+        int adjustment = -minVertexId;
+        int numVertices = adjacencia.size();
+
+        double[] distancia = new double[numVertices];
+        for (int i = 0; i < numVertices; i++) {
+            distancia[i] = Double.POSITIVE_INFINITY;
+        }
+
+        // Set distance to the source vertex as 0
+        Vertice source = this.getVertice(verticeOrigem);
+        distancia[source.getId() + adjustment] = 0;
+
+        // Relax edges repeatedly
+        for (int i = 0; i < numVertices - 1; i++) {
+            for (Vertice u : adjacencia) {
+                for (Aresta aresta : u.getArestas()) {
+                    Vertice v = aresta.destino();
+                    if (distancia[u.getId() + adjustment] + aresta.peso() < distancia[v.getId() + adjustment]) {
+                        distancia[v.getId() + adjustment] = distancia[u.getId() + adjustment] + aresta.peso();
+                    }
+                }
+            }
+        }
+        for (Vertice u : adjacencia) {
+            for (Aresta aresta : u.getArestas()) {
+                Vertice v = aresta.destino();
+                if (distancia[u.getId() + adjustment] + aresta.peso() < distancia[v.getId() + adjustment]) {
+                    System.out.println("Graph contains a negative weight cycle");
+                    return;
+                }
+            }
+        }
+        // Print the shortest distances
+        for (int i = 0; i < numVertices; i++) {
+            System.out.println(
+                    "Menor distância de " + source.getId() + " para " + (i + minVertexId) + ": " + distancia[i]);
+        }
     }
 
     @Override
@@ -311,8 +360,10 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
 
     @Override
     public int bellmanFordMenorDistanciaTodosParaTodos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'bellmanFordMenorDistanciaTodosParaTodos'");
+        for (Vertice vertice : this.adjacencia) {
+            this.bellmanFord(vertice.getId());
+        }
+        return 1;
     }
 
     @Override
@@ -328,37 +379,90 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
     }
 
     @Override
-    public void AEstrela() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'AEstrela'");
+    public List<Vertice> AEstrela(Vertice inicio, Vertice objetivo) {
+        Set<Vertice> visitados = new HashSet<>();
+        PriorityQueue<Vertice> fronteira = new PriorityQueue<>(
+                Comparator.comparingDouble(vertice -> vertice.getG() + vertice.getH()));
+
+        inicio.setG(0);
+        inicio.setH(calcularHeuristica(inicio, objetivo));
+        fronteira.add(inicio);
+
+        while (!fronteira.isEmpty()) {
+            Vertice atual = fronteira.poll();
+
+            if (atual.equals(objetivo)) {
+                return reconstruirCaminho(atual);
+            }
+
+            visitados.add(atual);
+
+            for (Aresta aresta : atual.getArestas()) {
+                Vertice vizinho = aresta.destino();
+
+                if (!visitados.contains(vizinho)) {
+                    double novoG = atual.getG() + aresta.peso();
+
+                    if (novoG < vizinho.getG() || !fronteira.contains(vizinho)) {
+                        vizinho.setG(novoG);
+                        vizinho.setH(calcularHeuristica(vizinho, objetivo));
+                        vizinho.setPai(atual);
+
+                        if (!fronteira.contains(vizinho)) {
+                            fronteira.add(vizinho);
+                        }
+                    }
+                }
+            }
+        }
+
+        return Collections.emptyList(); // Caminho não encontrado
     }
 
+    // Restante da classe...
 
+    private double calcularHeuristica(Vertice origem, Vertice destino) {
+        // Substitua pelo cálculo da heurística desejada (distância euclidiana,
+        // Manhattan, etc.)
+        return 0;
+    }
 
-    private Vertice getVertice(int id){
-        for (Vertice vertice:
-             this.adjacencia) {
-            if(vertice.getId() == id){
+    private List<Vertice> reconstruirCaminho(Vertice objetivo) {
+        List<Vertice> caminho = new ArrayList<>();
+        Vertice atual = objetivo;
+
+        while (atual != null) {
+            caminho.add(atual);
+            atual = atual.getPai();
+        }
+
+        Collections.reverse(caminho);
+        return caminho;
+    }
+
+    private Vertice getVertice(int id) {
+        for (Vertice vertice : this.adjacencia) {
+            if (vertice.getId() == id) {
                 return vertice;
             }
         }
-        throw new NotFoundException("Vertice "+ id +" nao encontrado");
+        throw new NotFoundException("Vertice " + id + " nao encontrado");
     }
 
-    private Vertice getVertice(String rotulo){
-        for (Vertice vertice:
-                this.adjacencia) {
-            if(vertice.getRotulo() == rotulo){
+    private Vertice getVertice(String rotulo) {
+        for (Vertice vertice : this.adjacencia) {
+            if (vertice.getRotulo() == rotulo) {
                 return vertice;
             }
         }
-        throw new NotFoundException("Vertice "+ rotulo +" nao encontrado");
+        throw new NotFoundException("Vertice " + rotulo + " nao encontrado");
     }
+
     @Override
     public String toString() {
         String r = "";
         for (Vertice u : adjacencia) {
-            r += u.getRotulo() + u.getId()+ " -> ";
+            r += u.getRotulo() + u.getId() + " -> ";
             for (Aresta e : u.getArestas()) {
                 Vertice v = e.destino();
                 r += v.getRotulo() + ", ";

@@ -42,7 +42,7 @@ public interface IGrafo<T> {
 
     void dijkstra();
 
-    void bellmanFord();
+    void bellmanFord(int verticeOrigem);
 
     void floydWarshall();
 
@@ -58,7 +58,7 @@ public interface IGrafo<T> {
 
     int floydWarshallMenorDistanciaTodosParaTodos();
 
-    void AEstrela(); // Ponto extra
+    List<Vertice> AEstrela(Vertice inicio, Vertice objetivo); // Ponto extra
 
     void imprimeGrafo();
 }

@@ -19,11 +19,21 @@ public class App {
             grafo2.rotularVertice(3, "C");
             grafo2.rotularVertice(4, "D");
 
-            grafo2.inserirAresta(1,2,1);
-            grafo2.inserirAresta(1,3,2);
-            grafo2.inserirAresta(2,4,3);
-            grafo2.inserirAresta(3,4,4);
+            grafo2.inserirAresta(1, 2, 1);
+            grafo2.inserirAresta(1, 3, 2);
+            grafo2.inserirAresta(2, 4, 3);
+            grafo2.inserirAresta(3, 4, 4);
+
+            grafo2.ponderarAresta(1, 2, 1);
+            grafo2.ponderarAresta(1, 3, 2);
+            grafo2.ponderarAresta(2, 4, 3);
+            grafo2.ponderarAresta(3, 4, 1);
+
             grafo2.imprimeGrafo();
+
+            grafo2.bellmanFordMenorDistanciaTodosParaTodos();
+            var lista = grafo2.AEstrela(new Vertice(1), new Vertice(3));
+            System.out.println(lista.toString());
 
             grafo2.importarGrafo("src/grafo.gefl");
 
@@ -32,7 +42,7 @@ public class App {
 
             grafoM.inserirAresta(0, 2);
             grafoM.inserirAresta(0, 3);
-            grafoM.inserirAresta(1,0);
+            grafoM.inserirAresta(1, 0);
             grafoM.inserirAresta(1, 3);
             grafoM.inserirAresta(2, 3);
             grafoM.inserirAresta(3, 4);
@@ -45,9 +55,8 @@ public class App {
             grafoM.rotularVertice(1, "vertice 2");
             grafoM.rotularVertice(2, "vertice 3");
 
-            grafoM.rotularAresta(1,0, "aresta 1 - 0");
-            grafoM.rotularAresta(0,3, "aresta 0 - 3");
-
+            grafoM.rotularAresta(1, 0, "aresta 1 - 0");
+            grafoM.rotularAresta(0, 3, "aresta 0 - 3");
 
             grafoM.imprimeGrafo();
 
