@@ -15,7 +15,6 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
     private boolean direcionado;
     private int[] pesosVertices;
     private String[] rotulosVertices;
-    // private int[] pesosArestas;
     private Map<String, String> rotulosArestas = new HashMap<>();
     private int totalArestas = 0;
 
@@ -43,6 +42,9 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
         rotulosVertices = new String[tamanho];
     }
 
+    /**
+    Insere aresta com valor padrão 1, para modificar valor, usar o ponderarAresta(int verticeOrigem, int verticeDestino, int peso)
+     */ 
     @Override
     public void inserirAresta(int verticeOrigem, int verticeDestino, int idAresta) {
         if (verticeOrigem >= 0 && verticeDestino >= 0 && verticeOrigem < matriz.length
@@ -52,6 +54,9 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
         }
     }
 
+    /** Insere aresta com valor padrão de 1, quando chamado sem o peso.
+     * 
+     */
     public void inserirAresta(int verticeOrigem, int verticeDestino) {
         inserirAresta(verticeOrigem, verticeDestino, 0);
     }
@@ -230,7 +235,7 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
             escreve.println((i + 1) + "  \"" + rotulosVertices[i] + "\" " + pesosVertices[i]);
         }
 
-        if (direcionado)
+        if (direcionado) //No Pajek, arestas direcionadas são chamadas de arcs (arcos)
             escreve.println("*Arcs");
         else
             escreve.println("*Edges");
