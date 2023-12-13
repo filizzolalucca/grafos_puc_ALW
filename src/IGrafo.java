@@ -40,7 +40,7 @@ public interface IGrafo<T> {
 
     void importarGrafo(String arquivo) throws IOException; // Ponto extra
 
-    void dijkstra();
+    void dijkstra(int verticeOrigem);
 
     void bellmanFord(int verticeOrigem);
 

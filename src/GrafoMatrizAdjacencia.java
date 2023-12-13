@@ -274,13 +274,13 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
     }
 
     @Override
-    public void dijkstra() {
+    public void dijkstra(int verticeOrigem) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'dijkstra'");
     }
 
     @Override
-    public void bellmanFord() {
+    public void bellmanFord(int vertice) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'bellmanFord'");
     }
@@ -328,7 +328,7 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
     }
 
     @Override
-    public void AEstrela() {
+    public List<Vertice> AEstrela(Vertice inicio, Vertice objetivo) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'AEstrela'");
     }

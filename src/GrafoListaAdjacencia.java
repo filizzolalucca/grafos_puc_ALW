@@ -279,7 +279,7 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
     }
 
     @Override
-    public void dijkstra() {
+    public void dijkstra(int verticeOrigem) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'dijkstra'");
     }
