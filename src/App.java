@@ -63,14 +63,7 @@ public class App {
 
             //grafoM.exportarGrafo("src/grafoexportado.net");
 
-            int[][] matriz = {
-                {0,6,5,5,0,0,0},
-                {0,0,0,0,-1,0,0},
-                {0,-2,0,0,1,0,0},
-                {0,0,0,0,0,-1,0},
-                {0,0,0,0,0,0,3},
-                {0,0,0,0,0,0,3},
-                {0,0,0,0,0,0,0}};
+
 
             var grafoM2 = new GrafoMatrizAdjacencia(7, true);
 
