@@ -292,39 +292,15 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
     }
 
     @Override
-    public int dijkstraMenorDistanciaUmParaTodos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'dijkstraMenorDistanciaUmParaTodos'");
-    }
-
-    @Override
     public int dijkstraMenorDistanciaTodosParaTodos() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'dijkstraMenorDistanciaTodosParaTodos'");
     }
 
     @Override
-    public int bellmanFordMenorDistanciaUmParaTodos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'bellmanFordMenorDistanciaUmParaTodos'");
-    }
-
-    @Override
     public int bellmanFordMenorDistanciaTodosParaTodos() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'bellmanFordMenorDistanciaTodosParaTodos'");
-    }
-
-    @Override
-    public int floydWarshallMenorDistanciaUmParaTodos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'floydWarshallMenorDistanciaUmParaTodos'");
-    }
-
-    @Override
-    public int floydWarshallMenorDistanciaTodosParaTodos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'floydWarshallMenorDistanciaTodosParaTodos'");
     }
 
     @Override
