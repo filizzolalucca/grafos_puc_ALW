@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface IGrafo<T> {
@@ -46,11 +45,13 @@ public interface IGrafo<T> {
 
     void floydWarshall();
 
-    int dijkstraMenorDistanciaTodosParaTodos();
+    void dijkstraMenorDistanciaTodosParaTodos();
 
-    int bellmanFordMenorDistanciaTodosParaTodos();
+    void bellmanFordMenorDistanciaTodosParaTodos();
 
-    List<Vertice> AEstrela(Vertice inicio, Vertice objetivo); // Ponto extra
+    void floydWarshallMenorDistanciaTodosParaTodos();
+
+    void AEstrela(int verticeOrigem, int verticeDestino); // Ponto extra
 
     void imprimeGrafo();
 }
