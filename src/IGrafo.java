@@ -46,19 +46,13 @@ public interface IGrafo<T> {
 
     void floydWarshall();
 
-    int dijkstraMenorDistanciaUmParaTodos();
+    void dijkstraMenorDistanciaTodosParaTodos();
 
-    int dijkstraMenorDistanciaTodosParaTodos();
+    void bellmanFordMenorDistanciaTodosParaTodos();
 
-    int bellmanFordMenorDistanciaUmParaTodos();
+    void floydWarshallMenorDistanciaTodosParaTodos();
 
-    int bellmanFordMenorDistanciaTodosParaTodos();
-
-    int floydWarshallMenorDistanciaUmParaTodos();
-
-    int floydWarshallMenorDistanciaTodosParaTodos();
-
-    void AEstrela(); // Ponto extra
+    void AEstrela(int verticeOrigem, int verticeDestino); // Ponto extra
 
     void imprimeGrafo();
 }
