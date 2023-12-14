@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 public class Vertice {
-
     private ArrayList<Aresta> arestas;
     private int id;
 
@@ -9,24 +8,30 @@ public class Vertice {
     private double pesoVertice;
     private boolean visitado;
 
-    /**
-     * Construtor para criação de vértice identificado
-     *
-     * @param id Número/id do vértice a ser criado (atributo final).
-     */
+    private Vertice pai; // Vértice anterior no caminho
+    private double h; // Heurística estimada do vértice até o destino
+    private double g; // Custo acumulado do ponto de partida até o vértice atual
+
     public Vertice(int id) {
         this.id = id;
         this.arestas = new ArrayList<>();
         this.pesoVertice = 0;
         this.rotulo = "";
         this.visitado = false;
+        this.pai = null;
+        this.h = 0;
+        this.g = Double.POSITIVE_INFINITY; // Inicializado como infinito até ser definido
+
     }
 
-    /**
-     * Retorna o ‘id’ do vértice, caso seja necessário para verificações próprias
-     *
-     * @return Identificador do vértice (int)
-     */
+    public double getG() {
+        return g;
+    }
+
+    public void setG(double g) {
+        this.g = g;
+    }
+
     public int getId() {
         return this.id;
     }
@@ -43,15 +48,10 @@ public class Vertice {
         this.pesoVertice = pesoVertice;
     }
 
-    public String getRotulo(){
+    public String getRotulo() {
         return this.rotulo;
     }
 
-    /**
-     * Retorna a lista de arestas
-     *
-     * @return ArrayList<Aresta>
-     */
     public ArrayList<Aresta> getArestas() {
         return this.arestas;
     }
@@ -60,56 +60,40 @@ public class Vertice {
         this.arestas.add(destino.id, new Aresta(peso, destino, id));
     }
 
-    /**
-     * Adiciona uma aresta não ponderada neste vértice para um destino
-     *
-     * @param destino Vértice de destino
-     */
     public void addAresta(Vertice destino, int idAresta) {
-        this.arestas.add(new Aresta(-1, destino, idAresta));
+        this.arestas.add(new Aresta(0, destino, idAresta));
     }
 
-    public void ponderarAresta(Vertice destino,double pesoVertice) {
+    public void ponderarAresta(Vertice destino, double pesoVertice) {
         this.arestas.forEach((aresta) -> {
-            if (aresta.destino().getId() == destino.getId()){
+            if (aresta.destino().getId() == destino.getId()) {
                 aresta.setPeso(pesoVertice);
             } else {
-                //se der tempo fazer tratamento de erro
-                System.out.println("Nao existe uma aresta entre os vertices informados");
+                // Se der tempo, fazer tratamento de erro
+                System.out.println("Não existe uma aresta entre os vértices informados");
             }
         });
     }
 
     public void rotularAresta(Vertice destino, String rotulo) {
         this.arestas.forEach((aresta) -> {
-            if (aresta.destino().getId() == destino.getId()){
+            if (aresta.destino().getId() == destino.getId()) {
                 aresta.setRotulo(rotulo);
             } else {
-                //se der tempo fazer tratamento de erro
-                System.out.println("Nao existe uma aresta entre os vertices informados");
+                // Se der tempo, fazer tratamento de erro
+                System.out.println("Não existe uma aresta entre os vértices informados");
             }
         });
     }
 
-
-
-
-
     public boolean existeAresta(int destino) {
         try {
             return this.arestas.get(destino) != null;
-        } catch ( IndexOutOfBoundsException e ) {
+        } catch (IndexOutOfBoundsException e) {
             return false;
         }
     }
 
-    /**
-     * Remove e retorna a aresta para o destino indicado. Retorna null caso não
-     * exista a aresta.
-     *
-     * @param destino Destino da aresta a ser removida.
-     * @return A aresta removida, ou null se não existir.
-     */
     public Aresta removeAresta(int destino) {
         return this.arestas.remove(destino);
     }
@@ -118,31 +102,37 @@ public class Vertice {
         return this.arestas.size();
     }
 
-    /**
-     * Marca o vértice como visitado
-     */
     public void visitar() {
         this.visitado = true;
     }
 
-    /**
-     * Marca o vértice como não visitado
-     */
     public void limparVisita() {
         this.visitado = false;
     }
 
-    /**
-     * Indica se o vértice foi visitado (TRUE) ou não (FALSE)
-     *
-     * @return TRUE/FALSE conforme o vértice tenha sido ou não visitado.
-     */
     public boolean visitado() {
         return this.visitado;
     }
 
-    public void addPeso(int aresta, double peso){
+    public void addPeso(int aresta, double peso) {
         var arestaPeso = this.arestas.get(aresta);
         arestaPeso.setPeso(peso);
+    }
+
+    // Adicionados métodos para A*
+    public Vertice getPai() {
+        return pai;
+    }
+
+    public void setPai(Vertice pai) {
+        this.pai = pai;
+    }
+
+    public double getH() {
+        return h;
+    }
+
+    public void setH(double h) {
+        this.h = h;
     }
 }

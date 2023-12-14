@@ -533,14 +533,16 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
 
     @Override
     public void AEstrela(int verticeOrigem, int verticeDestino) {
-        //Verifica se os pesos nos vertices foram preenchidos, pois sem eles não há como calcular o A*
+        // Verifica se os pesos nos vertices foram preenchidos, pois sem eles não há
+        // como calcular o A*
         if (pesosVertices == null || pesosVertices.length == 0) {
-        System.out.println("Erro: Os pesos dos vértices não foram fornecidos.");
-        return;
-    }
+            System.out.println("Erro: Os pesos dos vértices não foram fornecidos.");
+            return;
+        }
         int vertices = matriz.length;
 
-        // Inicialização dos arrays de fila de prioridade, custo e antecessor. Utilizando a heurística 
+        // Inicialização dos arrays de fila de prioridade, custo e antecessor.
+        // Utilizando a heurística
         PriorityQueue<Integer> filaPrioridade = new PriorityQueue<>(
                 Comparator.comparingInt(v -> heuristica(v, verticeDestino)));
         int[] custoAtual = new int[vertices];
@@ -582,23 +584,31 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
     private int heuristica(int verticeAtual, int verticeDestino) {
         return pesosVertices[verticeAtual];
     }
-    /**Esta função utiliza um loop para percorrer os antecessores, começando pelo vértice de destino até chegar ao vértice de origem. Ela adiciona cada vértice ao início da lista caminho. Ao final, verifica se o primeiro elemento da lista é de fato o vértice de origem. Se for, o caminho é válido; caso contrário, retorna uma lista vazia indicando que o caminho não foi encontrado. */
+
+    /**
+     * Esta função utiliza um loop para percorrer os antecessores, começando pelo
+     * vértice de destino até chegar ao vértice de origem. Ela adiciona cada vértice
+     * ao início da lista caminho. Ao final, verifica se o primeiro elemento da
+     * lista é de fato o vértice de origem. Se for, o caminho é válido; caso
+     * contrário, retorna uma lista vazia indicando que o caminho não foi
+     * encontrado.
+     */
     private List<Integer> reconstruirCaminho(int[] antecessor, int verticeOrigem, int verticeDestino) {
-    List<Integer> caminho = new ArrayList<>();
-    int verticeAtual = verticeDestino;
+        List<Integer> caminho = new ArrayList<>();
+        int verticeAtual = verticeDestino;
 
-    while (verticeAtual != -1) {
-        caminho.add(0, verticeAtual); // Adiciona o vértice no início da lista
-        verticeAtual = antecessor[verticeAtual];
-    }
+        while (verticeAtual != -1) {
+            caminho.add(0, verticeAtual); // Adiciona o vértice no início da lista
+            verticeAtual = antecessor[verticeAtual];
+        }
 
-    // Verifica se o caminho começa no vértice de origem
-    if (caminho.get(0) == verticeOrigem) {
-        return caminho;
-    } else {
-        // Se não, retorna uma lista vazia indicando que o caminho não foi encontrado
-        return Collections.emptyList();
+        // Verifica se o caminho começa no vértice de origem
+        if (caminho.get(0) == verticeOrigem) {
+            return caminho;
+        } else {
+            // Se não, retorna uma lista vazia indicando que o caminho não foi encontrado
+            return Collections.emptyList();
+        }
     }
-}
 
 }
