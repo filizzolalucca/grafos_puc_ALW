@@ -280,8 +280,32 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
 
     @Override
     public void dijkstra(int verticeOrigem) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'dijkstra'");
+        PriorityQueue<Vertice> filaPrioridade = new PriorityQueue<>(Comparator.comparingDouble(Vertice::getG));
+        Vertice origem = getVertice(verticeOrigem);
+
+        origem.setG(0.0);
+        filaPrioridade.add(origem);
+
+        while (!filaPrioridade.isEmpty()) {
+            Vertice verticeAtual = filaPrioridade.poll();
+
+            if (!verticeAtual.visitado()) {
+                verticeAtual.visitar();
+
+                for (Aresta aresta : verticeAtual.getArestas()) {
+                    Vertice verticeVizinho = aresta.destino();
+                    double pesoAresta = aresta.peso();
+                    double novoPeso = verticeAtual.getG() + pesoAresta;
+
+                    if (!verticeVizinho.visitado() && novoPeso < verticeVizinho.getG()) {
+                        filaPrioridade.remove(verticeVizinho);
+                        verticeVizinho.setG(novoPeso);
+                        verticeVizinho.setPai(verticeAtual);
+                        filaPrioridade.add(verticeVizinho);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -336,26 +360,71 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
 
     @Override
     public void floydWarshall() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'floydWarshall'");
+        int numVertices = adjacencia.size();
+        double[][] distancias = new double[numVertices][numVertices];
+
+        // Inicialização das distâncias
+        for (int i = 0; i < numVertices; i++) {
+            for (int j = 0; j < numVertices; j++) {
+                if (i == j) {
+                    distancias[i][j] = 0.0;
+                } else {
+                    Vertice verticeI = adjacencia.get(i);
+                    Vertice verticeJ = adjacencia.get(j);
+                    Aresta aresta = getAresta(verticeI, verticeJ);
+
+                    if (aresta != null) {
+                        distancias[i][j] = aresta.peso();
+                    } else {
+                        distancias[i][j] = Double.POSITIVE_INFINITY;
+                    }
+                }
+            }
+        }
+
+        // Algoritmo de Floyd-Warshall
+        for (int k = 0; k < numVertices; k++) {
+            for (int i = 0; i < numVertices; i++) {
+                for (int j = 0; j < numVertices; j++) {
+                    if (distancias[i][k] != Double.POSITIVE_INFINITY
+                            && distancias[k][j] != Double.POSITIVE_INFINITY
+                            && distancias[i][k] + distancias[k][j] < distancias[i][j]) {
+                        distancias[i][j] = distancias[i][k] + distancias[k][j];
+                    }
+                }
+            }
+        }
+
+        System.out.println("Matriz de distâncias mínimas entre todos os pares de vértices:");
+        for(int j= 0; j< numVertices; j++) {
+            System.out.print(adjacencia.get(j).getRotulo() + " | ");
+        }
+        for (int i = 0; i < numVertices; i++) {
+            System.out.print(adjacencia.get(i).getRotulo() + " ");
+            for (int j = 0; j < numVertices; j++) {
+                System.out.print(distancias[i][j] + " | ");
+            }
+            System.out.println();
+        }
+
     }
 
-    @Override
-    public int dijkstraMenorDistanciaUmParaTodos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'dijkstraMenorDistanciaUmParaTodos'");
+    // Método auxiliar para obter a aresta entre dois vértices
+    private Aresta getAresta(Vertice origem, Vertice destino) {
+        for (Aresta aresta : origem.getArestas()) {
+            if (aresta.destino().equals(destino)) {
+                return aresta;
+            }
+        }
+        return null;
     }
 
     @Override
     public int dijkstraMenorDistanciaTodosParaTodos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'dijkstraMenorDistanciaTodosParaTodos'");
-    }
-
-    @Override
-    public int bellmanFordMenorDistanciaUmParaTodos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'bellmanFordMenorDistanciaUmParaTodos'");
+        for (Vertice vertice : this.adjacencia) {
+            this.dijkstra(vertice.getId());
+        }
+        return 1;
     }
 
     @Override
@@ -364,18 +433,6 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
             this.bellmanFord(vertice.getId());
         }
         return 1;
-    }
-
-    @Override
-    public int floydWarshallMenorDistanciaUmParaTodos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'floydWarshallMenorDistanciaUmParaTodos'");
-    }
-
-    @Override
-    public int floydWarshallMenorDistanciaTodosParaTodos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'floydWarshallMenorDistanciaTodosParaTodos'");
     }
 
     @Override
