@@ -9,7 +9,7 @@ public class Vertice {
     private boolean visitado;
 
     private Vertice pai; // Vértice anterior no caminho
-    private double h; // Heurística estimada do vértice até o destino
+    // private double h; // Heurística estimada do vértice até o destino
     private double g; // Custo acumulado do ponto de partida até o vértice atual
 
     public Vertice(int id) {
@@ -19,8 +19,9 @@ public class Vertice {
         this.rotulo = "";
         this.visitado = false;
         this.pai = null;
-        this.h = 0;
-        this.g = Double.POSITIVE_INFINITY; // Inicializado como infinito até ser definido
+        // this.h = 0;
+        this.g = Double.POSITIVE_INFINITY; // Inicializado como infinito até ser
+        // definido
 
     }
 
@@ -128,11 +129,11 @@ public class Vertice {
         this.pai = pai;
     }
 
-    public double getH() {
-        return h;
-    }
+    // public double getH() {
+    // return h;
+    // }
 
-    public void setH(double h) {
-        this.h = h;
-    }
+    // public void setH(double h) {
+    // this.h = h;
+    // }
 }
