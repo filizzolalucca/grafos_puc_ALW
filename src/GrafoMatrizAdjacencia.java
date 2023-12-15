@@ -301,9 +301,9 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
     }
 
     @Override
-    public void dijkstra(int verticeOrigem) {
+    public List<Integer> dijkstra(int verticeOrigem) {
         int vertices = matriz.length;
-        int[] distancia = new int[vertices];
+        Integer[] distancia = new Integer[vertices];
         boolean[] visitados = new boolean[vertices];
         int infinito = Integer.MAX_VALUE - 1;
         int[] antecessor = new int[vertices];
@@ -335,9 +335,11 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
         for (int i = 0; i < distancia.length; i++) {
             System.out.println("Vértice " + i + ": " + distancia[i] + " antecessor:" + antecessor[i]);
         }
+
+        return Arrays.asList(distancia);
     }
 
-    private int distaciaMinima(int[] distancia, boolean[] visitados) {
+    private int distaciaMinima(Integer[] distancia, boolean[] visitados) {
         int minimo = Integer.MAX_VALUE - 1;
         int minIndex = -1;
 
@@ -351,9 +353,9 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
     }
 
     @Override
-    public void bellmanFord(int verticeOrigem) {
+    public List<Integer> bellmanFord(int verticeOrigem) {
         int vertices = matriz.length;
-        int[] distancia = new int[vertices];
+        Integer[] distancia = new Integer[vertices];
         int[] antecessor = new int[vertices];
         int infinito = Integer.MAX_VALUE - 1;
 
@@ -377,7 +379,7 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
             for (int v = 0; v < vertices; v++) {
                 if (matriz[u][v] != 0 && distancia[u] != infinito && distancia[u] + matriz[u][v] < distancia[v]) {
                     System.out.println("Há um ciclo de peso negativo, impossibilitando o algoritmo");
-                    return;
+                    throw new RuntimeException("Há um ciclo de peso negativo, impossibilitando o algoritmo");
                 }
             }
         }
@@ -387,10 +389,11 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
         for (int i = 0; i < distancia.length; i++) {
             System.out.println("Vértice " + i + ": " + distancia[i] + " antecessor:" + antecessor[i]);
         }
+        return Arrays.asList(distancia);
     }
 
     @Override
-    public void floydWarshall() {
+    public List<List<Integer>> floydWarshall() {
         int vertices = matriz.length;
         int[][] distancias = new int[vertices][vertices];
 
@@ -424,7 +427,7 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
     }
 
     @Override
-    public void dijkstraMenorDistanciaTodosParaTodos() {
+    public List<List<Integer>> dijkstraMenorDistanciaTodosParaTodos() {
         int vertices = matriz.length;
 
         // Matriz para armazenar as menores distâncias
@@ -489,7 +492,7 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
     }
 
     @Override
-    public void bellmanFordMenorDistanciaTodosParaTodos() {
+    public List<List<Integer>> bellmanFordMenorDistanciaTodosParaTodos() {
         int vertices = matriz.length;
         int[][] distancias = new int[vertices][vertices];
         int[][] antecessores = new int[vertices][vertices];
