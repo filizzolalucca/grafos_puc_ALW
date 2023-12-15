@@ -354,19 +354,18 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
                 }
             }
         }
-        // Print the shortest distances
         var arrayDist = new ArrayList<Vertice>();
         for (int i = 0; i < numVertices; i++) {
             arrayDist.add(source.getId(), source);
             System.out.println(
                     "Menor distância de " + source.getId() + " para " + (i + minVertexId) + ": " + distancia[i]);
         }
-        return new ArrayList<Vertice>();
+        return arrayDist;
 
     }
 
     @Override
-    public List<Vertice> floydWarshall() {
+    public List<List<Vertice>> floydWarshall() {
         int numVertices = adjacencia.size();
         double[][] distancias = new double[numVertices][numVertices];
 
@@ -427,18 +426,21 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
     }
 
     @Override
-    public IGrafo<Vertice> dijkstraMenorDistanciaTodosParaTodos() {
+    public List<List<Vertice>> dijkstraMenorDistanciaTodosParaTodos() {
+        var distancias = new ArrayList<List<Vertice>>();
         for (Vertice vertice : this.adjacencia) {
-            this.dijkstra(vertice.getId());
+            distancias.add(this.dijkstra(vertice.getId()));
         }
-        return this;
+        return distancias;
     }
 
     @Override
-    public void bellmanFordMenorDistanciaTodosParaTodos() {
+    public List<List<Vertice>> bellmanFordMenorDistanciaTodosParaTodos() {
+        var distancias = new ArrayList<List<Vertice>>();
         for (Vertice vertice : this.adjacencia) {
-            this.bellmanFord(vertice.getId());
+            distancias.add(this.bellmanFord(vertice.getId()));
         }
+        return distancias;
     }
 
     @Override

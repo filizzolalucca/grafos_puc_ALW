@@ -43,13 +43,13 @@ public interface IGrafo<T> {
 
     List<T> bellmanFord(int verticeOrigem);
 
-    List<T> floydWarshall();
+    List<List<T>> floydWarshall();
 
-    IGrafo<T> dijkstraMenorDistanciaTodosParaTodos();
+    List<List<T>> dijkstraMenorDistanciaTodosParaTodos();
 
-    void bellmanFordMenorDistanciaTodosParaTodos();
+    List<List<T>> bellmanFordMenorDistanciaTodosParaTodos();
 
-    void floydWarshallMenorDistanciaTodosParaTodos();
+    List<List<T>> floydWarshallMenorDistanciaTodosParaTodos();
 
     void AEstrela(int verticeOrigem, int verticeDestino); // Ponto extra
 
