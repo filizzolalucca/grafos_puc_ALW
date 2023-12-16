@@ -329,13 +329,6 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
             }
 
         }
-
-        // Imprime as distâncias mínimas
-        System.out.println("Distâncias mínimas a partir do vértice de origem:");
-        for (int i = 0; i < distancia.length; i++) {
-            System.out.println("Vértice " + i + ": " + distancia[i] + " antecessor:" + antecessor[i]);
-        }
-
         return Arrays.asList(distancia);
     }
 
@@ -383,12 +376,6 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
                 }
             }
         }
-
-        // Imprime as distâncias mínimas
-        System.out.println("Distâncias mínimas a partir do vértice de origem:");
-        for (int i = 0; i < distancia.length; i++) {
-            System.out.println("Vértice " + i + ": " + distancia[i] + " antecessor:" + antecessor[i]);
-        }
         return Arrays.asList(distancia);
     }
 
@@ -416,116 +403,57 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
             }
         }
 
-        // Imprime as distâncias mínimas
-        System.out.println("Matriz de distâncias mínimas entre todos os pares de vértices:");
+        // Converter a matriz de distâncias para lista de lista de inteiros.
+        List<List<Integer>> listaDistancias = new ArrayList<>();
         for (int i = 0; i < vertices; i++) {
+            List<Integer> linhaDistancias = new ArrayList<>();
             for (int j = 0; j < vertices; j++) {
-                System.out.print(distancias[i][j] + " ");
+                linhaDistancias.add(distancias[i][j]);
             }
-            System.out.println();
+            listaDistancias.add(linhaDistancias);
         }
+
+        return listaDistancias;
+
     }
 
     @Override
     public List<List<Integer>> dijkstraMenorDistanciaTodosParaTodos() {
         int vertices = matriz.length;
 
-        // Matriz para armazenar as menores distâncias
-        int[][] distancias = new int[vertices][vertices];
-        int infinito = Integer.MAX_VALUE - 1;
-
-        // Inicializa as matrizes de distâncias
-        for (int i = 0; i < vertices; i++) {
-            Arrays.fill(distancias[i], infinito);
-            distancias[i][i] = 0;
-        }
+        // Lista de listas para armazenar as distâncias mínimas
+        List<List<Integer>> listaDistancias = new ArrayList<>();
 
         // Executa o algoritmo de Dijkstra para cada vértice como origem
         for (int origem = 0; origem < vertices; origem++) {
-            int[] distancia = new int[vertices];
-            boolean[] visitados = new boolean[vertices];
-            int[] antecessor = new int[vertices];
-
-            Arrays.fill(distancia, infinito);
-            Arrays.fill(visitados, false);
-            distancia[origem] = 0;
-
-            for (int i = 0; i < vertices - 1; i++) {
-                int u = dijkstraMenorDistanciaUmParaTodosSelecionaVerticeMinimo(distancia, visitados);
-
-                visitados[u] = true;
-
-                for (int v = 0; v < vertices; v++) {
-                    if (!visitados[v] && matriz[u][v] != 0 && distancia[u] != infinito &&
-                            distancia[u] + matriz[u][v] < distancia[v]) {
-                        distancia[v] = distancia[u] + matriz[u][v];
-                        antecessor[v] = u;
-                    }
-                }
-            }
-
-            // Armazena as distâncias mínimas na matriz de distâncias
-            System.arraycopy(distancia, 0, distancias[origem], 0, vertices);
+            List<Integer> distanciasOrigem = dijkstra(origem);
+            listaDistancias.add(distanciasOrigem);
         }
 
-        // Imprime as distâncias mínimas
-        System.out.println("Distâncias mínimas entre todos os pares de vértices:");
-        for (int i = 0; i < vertices; i++) {
-            for (int j = 0; j < vertices; j++) {
-                System.out.println("De " + i + " para " + j + ": " + distancias[i][j]);
-            }
-        }
-    }
-
-    // Método auxiliar para selecionar o vértice com a menor distância
-    private int dijkstraMenorDistanciaUmParaTodosSelecionaVerticeMinimo(int[] distancias, boolean[] visitados) {
-        int minimo = Integer.MAX_VALUE - 1;
-        int minIndex = -1;
-
-        for (int v = 0; v < distancias.length; v++) {
-            if (!visitados[v] && distancias[v] <= minimo) {
-                minimo = distancias[v];
-                minIndex = v;
-            }
-        }
-        return minIndex;
+        return listaDistancias;
     }
 
     @Override
     public List<List<Integer>> bellmanFordMenorDistanciaTodosParaTodos() {
         int vertices = matriz.length;
-        int[][] distancias = new int[vertices][vertices];
-        int[][] antecessores = new int[vertices][vertices];
-        int infinito = Integer.MAX_VALUE - 1;
+        List<List<Integer>> resultados = new ArrayList<>();
 
-        // Inicializa as matrizes de distâncias e antecessores
-        for (int i = 0; i < vertices; i++) {
-            Arrays.fill(distancias[i], infinito);
-            distancias[i][i] = 0;
-
-            Arrays.fill(antecessores[i], -1);
-        }
-
-        // Relaxamento das arestas
-        for (int i = 0; i < vertices - 1; i++) {
-            for (int u = 0; u < vertices; u++) {
-                for (int v = 0; v < vertices; v++) {
-                    if (matriz[u][v] != 0 && distancias[u][v] > distancias[u][i] + matriz[u][v]) {
-                        distancias[u][v] = distancias[u][i] + matriz[u][v];
-                        antecessores[u][v] = i;
-                    }
-                }
-            }
+        // Executa o algoritmo de Bellman-Ford para cada vértice como origem
+        for (int origem = 0; origem < vertices; origem++) {
+            List<Integer> resultado = bellmanFord(origem).getDistancias();
+            resultados.add(resultado);
         }
 
         // Imprime as distâncias mínimas
         System.out.println("Distâncias mínimas entre todos os pares de vértices:");
         for (int i = 0; i < vertices; i++) {
+            List<Integer> resultado = resultados.get(i);
             for (int j = 0; j < vertices; j++) {
-                System.out.println(
-                        "De " + i + " para " + j + ": " + distancias[i][j] + " antecessor: " + antecessores[i][j]);
+                System.out.println("De " + i + " para " + j + ": " + resultado.get(j));
             }
         }
+
+        return resultados;
     }
 
     @Override
