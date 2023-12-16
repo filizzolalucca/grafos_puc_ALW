@@ -32,6 +32,11 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
         return this.adjacencia.add(novo);
     }
 
+    public boolean inserirVertice(int id, int peso, String rotulo) {
+        Vertice novo = new Vertice(id, peso, rotulo);
+        return this.adjacencia.add(novo);
+    }
+
     // ALEKS
     @Override
     public void inserirAresta(int verticeOrigem, int verticeDestino, int idAresta) {
@@ -359,9 +364,7 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
         }
         var arrayDist = new ArrayList<Vertice>();
         for (int i = 0; i < numVertices; i++) {
-            arrayDist.add(source.getId() -1 , source);
-            System.out.println(
-                    "Menor distância de " + source.getId() + " para " + (i + minVertexId) + ": " + distancia[i]);
+            arrayDist.add(source);
         }
         return arrayDist;
 
