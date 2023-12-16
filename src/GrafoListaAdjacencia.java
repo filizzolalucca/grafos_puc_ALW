@@ -286,11 +286,14 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
         origem.setG(0.0);
         filaPrioridade.add(origem);
 
+        List<Vertice> caminhosMaisCurto = new ArrayList<>();
+
         while (!filaPrioridade.isEmpty()) {
             Vertice verticeAtual = filaPrioridade.poll();
 
             if (!verticeAtual.visitado()) {
                 verticeAtual.visitar();
+                caminhosMaisCurto.add(verticeAtual);
 
                 for (Aresta aresta : verticeAtual.getArestas()) {
                     Vertice verticeVizinho = aresta.destino();
@@ -306,7 +309,7 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
                 }
             }
         }
-        return new ArrayList<Vertice>();
+        return caminhosMaisCurto;
 
     }
 
@@ -369,7 +372,6 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
         int numVertices = adjacencia.size();
         double[][] distancias = new double[numVertices][numVertices];
 
-        // Inicialização das distâncias
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
                 if (i == j) {
@@ -388,7 +390,6 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
             }
         }
 
-        // Algoritmo de Floyd-Warshall
         for (int k = 0; k < numVertices; k++) {
             for (int i = 0; i < numVertices; i++) {
                 for (int j = 0; j < numVertices; j++) {
@@ -401,13 +402,11 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
             }
         }
 
-        // Criar uma lista de listas para representar a matriz de caminhos mais curtos
         List<List<Vertice>> matrizCaminhosMaisCurto = new ArrayList<>();
         for (int i = 0; i < numVertices; i++) {
             List<Vertice> linha = new ArrayList<>();
             for (int j = 0; j < numVertices; j++) {
                 if (distancias[i][j] == Double.POSITIVE_INFINITY) {
-                    // Nenhum caminho existe, você pode representar isso de forma diferente se necessário
                     linha.add(null);
                 } else {
                     linha.add(adjacencia.get(j));
@@ -416,21 +415,9 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
             matrizCaminhosMaisCurto.add(linha);
         }
 
-        System.out.println("Matriz de distâncias mínimas entre todos os pares de vértices:");
-        for (int j = 0; j < numVertices; j++) {
-            System.out.print(adjacencia.get(j).getRotulo() + " | ");
-        }
-        for (int i = 0; i < numVertices; i++) {
-            System.out.print(adjacencia.get(i).getRotulo() + " ");
-            for (int j = 0; j < numVertices; j++) {
-                System.out.print(distancias[i][j] + " | ");
-            }
-            System.out.println();
-        }
         return matrizCaminhosMaisCurto;
     }
 
-    // Método auxiliar para obter a aresta entre dois vértices
     private Aresta getAresta(Vertice origem, Vertice destino) {
         for (Aresta aresta : origem.getArestas()) {
             if (aresta.destino().equals(destino)) {
@@ -500,27 +487,6 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
 
         // return Collections.emptyList(); // Caminho não encontrado
     }
-
-    // Restante da classe...
-
-    private double calcularHeuristica(Vertice origem, Vertice destino) {
-        // Substitua pelo cálculo da heurística desejada (distância euclidiana,
-        // Manhattan, etc.)
-        return 0;
-    }
-
-    // private List<Vertice> reconstruirCaminho(Vertice objetivo) {
-    // List<Vertice> caminho = new ArrayList<>();
-    // Vertice atual = objetivo;
-
-    // while (atual != null) {
-    // caminho.add(atual);
-    // atual = atual.getPai();
-    // }
-
-    // Collections.reverse(caminho);
-    // return caminho;
-    // }
 
     private Vertice getVertice(int id) {
         for (Vertice vertice : this.adjacencia) {

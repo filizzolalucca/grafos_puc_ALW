@@ -29,7 +29,7 @@ public class App {
 
             grafo2.imprimeGrafo();
 
-            grafo2.bellmanFordMenorDistanciaTodosParaTodos();
+            //grafo2.bellmanFordMenorDistanciaTodosParaTodos();
 
             grafo2.dijkstraMenorDistanciaTodosParaTodos();
 
