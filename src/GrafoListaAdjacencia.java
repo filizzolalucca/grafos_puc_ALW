@@ -279,18 +279,21 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
     }
 
     @Override
-    public void dijkstra(int verticeOrigem) {
+    public List<Vertice> dijkstra(int verticeOrigem) {
         PriorityQueue<Vertice> filaPrioridade = new PriorityQueue<>(Comparator.comparingDouble(Vertice::getG));
         Vertice origem = getVertice(verticeOrigem);
 
         origem.setG(0.0);
         filaPrioridade.add(origem);
 
+        List<Vertice> caminhosMaisCurto = new ArrayList<>();
+
         while (!filaPrioridade.isEmpty()) {
             Vertice verticeAtual = filaPrioridade.poll();
 
             if (!verticeAtual.visitado()) {
                 verticeAtual.visitar();
+                caminhosMaisCurto.add(verticeAtual);
 
                 for (Aresta aresta : verticeAtual.getArestas()) {
                     Vertice verticeVizinho = aresta.destino();
@@ -306,10 +309,12 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
                 }
             }
         }
+        return caminhosMaisCurto;
+
     }
 
     @Override
-    public void bellmanFord(int verticeOrigem) {
+    public List<Vertice> bellmanFord(int verticeOrigem) {
         // Find the minimum vertex ID
         int minVertexId = Integer.MAX_VALUE;
         for (Vertice v : adjacencia) {
@@ -347,23 +352,26 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
                 Vertice v = aresta.destino();
                 if (distancia[u.getId() + adjustment] + aresta.peso() < distancia[v.getId() + adjustment]) {
                     System.out.println("Graph contains a negative weight cycle");
-                    return;
+                    return new ArrayList<Vertice>();
+
                 }
             }
         }
-        // Print the shortest distances
+        var arrayDist = new ArrayList<Vertice>();
         for (int i = 0; i < numVertices; i++) {
+            arrayDist.add(source.getId() -1 , source);
             System.out.println(
                     "Menor distância de " + source.getId() + " para " + (i + minVertexId) + ": " + distancia[i]);
         }
+        return arrayDist;
+
     }
 
     @Override
-    public void floydWarshall() {
+    public List<List<Vertice>> floydWarshall() {
         int numVertices = adjacencia.size();
         double[][] distancias = new double[numVertices][numVertices];
 
-        // Inicialização das distâncias
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
                 if (i == j) {
@@ -382,7 +390,6 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
             }
         }
 
-        // Algoritmo de Floyd-Warshall
         for (int k = 0; k < numVertices; k++) {
             for (int i = 0; i < numVertices; i++) {
                 for (int j = 0; j < numVertices; j++) {
@@ -395,21 +402,22 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
             }
         }
 
-        System.out.println("Matriz de distâncias mínimas entre todos os pares de vértices:");
-        for(int j= 0; j< numVertices; j++) {
-            System.out.print(adjacencia.get(j).getRotulo() + " | ");
-        }
+        List<List<Vertice>> matrizCaminhosMaisCurto = new ArrayList<>();
         for (int i = 0; i < numVertices; i++) {
-            System.out.print(adjacencia.get(i).getRotulo() + " ");
+            List<Vertice> linha = new ArrayList<>();
             for (int j = 0; j < numVertices; j++) {
-                System.out.print(distancias[i][j] + " | ");
+                if (distancias[i][j] == Double.POSITIVE_INFINITY) {
+                    linha.add(null);
+                } else {
+                    linha.add(adjacencia.get(j));
+                }
             }
-            System.out.println();
+            matrizCaminhosMaisCurto.add(linha);
         }
 
+        return matrizCaminhosMaisCurto;
     }
 
-    // Método auxiliar para obter a aresta entre dois vértices
     private Aresta getAresta(Vertice origem, Vertice destino) {
         for (Aresta aresta : origem.getArestas()) {
             if (aresta.destino().equals(destino)) {
@@ -420,81 +428,64 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
     }
 
     @Override
-    public int dijkstraMenorDistanciaTodosParaTodos() {
+    public List<List<Vertice>> dijkstraMenorDistanciaTodosParaTodos() {
+        var distancias = new ArrayList<List<Vertice>>();
         for (Vertice vertice : this.adjacencia) {
-            this.dijkstra(vertice.getId());
+            distancias.add(this.dijkstra(vertice.getId()));
         }
-        return 1;
+        return distancias;
     }
 
     @Override
-    public int bellmanFordMenorDistanciaTodosParaTodos() {
+    public List<List<Vertice>> bellmanFordMenorDistanciaTodosParaTodos() {
+        var distancias = new ArrayList<List<Vertice>>();
         for (Vertice vertice : this.adjacencia) {
-            this.bellmanFord(vertice.getId());
+            distancias.add(this.bellmanFord(vertice.getId()));
         }
-        return 1;
+        return distancias;
     }
 
     @Override
-    public List<Vertice> AEstrela(Vertice inicio, Vertice objetivo) {
-        Set<Vertice> visitados = new HashSet<>();
-        PriorityQueue<Vertice> fronteira = new PriorityQueue<>(
-                Comparator.comparingDouble(vertice -> vertice.getG() + vertice.getH()));
+    public void AEstrela(int origem, int destino) {
+        // Set<Vertice> visitados = new HashSet<>();
+        // var inicio = this.getVertice(origem);
+        // var objetivo = this.getVertice(destino);
+        // PriorityQueue<Vertice> fronteira = new PriorityQueue<>(
+        // Comparator.comparingDouble(vertice -> vertice.getG() + vertice.getH()));
 
-        inicio.setG(0);
-        inicio.setH(calcularHeuristica(inicio, objetivo));
-        fronteira.add(inicio);
+        // inicio.setG(0);
+        // inicio.setH(calcularHeuristica(inicio, objetivo));
+        // fronteira.add(inicio);
 
-        while (!fronteira.isEmpty()) {
-            Vertice atual = fronteira.poll();
+        // while (!fronteira.isEmpty()) {
+        // Vertice atual = fronteira.poll();
 
-            if (atual.equals(objetivo)) {
-                return reconstruirCaminho(atual);
-            }
+        // if (atual.equals(objetivo)) {
+        // reconstruirCaminho(atual);
+        // }
 
-            visitados.add(atual);
+        // visitados.add(atual);
 
-            for (Aresta aresta : atual.getArestas()) {
-                Vertice vizinho = aresta.destino();
+        // for (Aresta aresta : atual.getArestas()) {
+        // Vertice vizinho = aresta.destino();
 
-                if (!visitados.contains(vizinho)) {
-                    double novoG = atual.getG() + aresta.peso();
+        // if (!visitados.contains(vizinho)) {
+        // double novoG = atual.getG() + aresta.peso();
 
-                    if (novoG < vizinho.getG() || !fronteira.contains(vizinho)) {
-                        vizinho.setG(novoG);
-                        vizinho.setH(calcularHeuristica(vizinho, objetivo));
-                        vizinho.setPai(atual);
+        // if (novoG < vizinho.getG() || !fronteira.contains(vizinho)) {
+        // vizinho.setG(novoG);
+        // vizinho.setH(calcularHeuristica(vizinho, objetivo));
+        // vizinho.setPai(atual);
 
-                        if (!fronteira.contains(vizinho)) {
-                            fronteira.add(vizinho);
-                        }
-                    }
-                }
-            }
-        }
+        // if (!fronteira.contains(vizinho)) {
+        // fronteira.add(vizinho);
+        // }
+        // }
+        // }
+        // }
+        // }
 
-        return Collections.emptyList(); // Caminho não encontrado
-    }
-
-    // Restante da classe...
-
-    private double calcularHeuristica(Vertice origem, Vertice destino) {
-        // Substitua pelo cálculo da heurística desejada (distância euclidiana,
-        // Manhattan, etc.)
-        return 0;
-    }
-
-    private List<Vertice> reconstruirCaminho(Vertice objetivo) {
-        List<Vertice> caminho = new ArrayList<>();
-        Vertice atual = objetivo;
-
-        while (atual != null) {
-            caminho.add(atual);
-            atual = atual.getPai();
-        }
-
-        Collections.reverse(caminho);
-        return caminho;
+        // return Collections.emptyList(); // Caminho não encontrado
     }
 
     private Vertice getVertice(int id) {

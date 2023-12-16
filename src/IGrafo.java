@@ -39,17 +39,15 @@ public interface IGrafo<T> {
 
     void importarGrafo(String arquivo) throws IOException; // Ponto extra
 
-    void dijkstra(int verticeOrigem);
+    List<T> dijkstra(int verticeOrigem);
 
-    void bellmanFord(int verticeOrigem);
+    List<T> bellmanFord(int verticeOrigem);
 
-    void floydWarshall();
+    List<List<T>> floydWarshall();
 
-    void dijkstraMenorDistanciaTodosParaTodos();
+    List<List<T>> dijkstraMenorDistanciaTodosParaTodos();
 
-    void bellmanFordMenorDistanciaTodosParaTodos();
-
-    void floydWarshallMenorDistanciaTodosParaTodos();
+    List<List<T>> bellmanFordMenorDistanciaTodosParaTodos();
 
     void AEstrela(int verticeOrigem, int verticeDestino); // Ponto extra
 
