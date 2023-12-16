@@ -122,35 +122,15 @@ public class App {
 
     private static void testeExecucaoListaAdjacencia() {
         var grafo1000 = createVertices(1000);
-        var grafo10000 = createVertices(100000);
-        var grafo100000 = createVertices(100000);
-        var grafo1000000 = createVertices(1000000);
+        var grafo10000 = createVertices(1500);
+        var grafo100000 = createVertices(2000);
+        var grafo1000000 = createVertices(2500);
         System.out.println("Criou");
-        long startTime = System.nanoTime();
-        grafo1000.bellmanFordMenorDistanciaTodosParaTodos();
-        long endTime = System.nanoTime();
-        System.out.println("Tempo de execução em nanosegundos bellmanford1000: " + (endTime - startTime));
-
-        startTime = System.nanoTime();
-        grafo10000.bellmanFordMenorDistanciaTodosParaTodos();
-        endTime = System.nanoTime();
-        System.out.println("Tempo de execução em nanosegundos bellmanford10000: " + (endTime - startTime));
-
-        startTime = System.nanoTime();
-        grafo100000.bellmanFordMenorDistanciaTodosParaTodos();
-        endTime = System.nanoTime();
-        System.out.println("Tempo de execução em nanosegundos bellmanford100000: " + (endTime - startTime));
-
-        startTime = System.nanoTime();
-        grafo1000000.bellmanFordMenorDistanciaTodosParaTodos();
-        endTime = System.nanoTime();
-        System.out.println("Tempo de execução em nanosegundos bellmanford100000: " + (endTime - startTime));
-
         // djikstra
 
-        startTime = System.nanoTime();
+        long startTime = System.nanoTime();
         grafo1000.dijkstraMenorDistanciaTodosParaTodos();
-        endTime = System.nanoTime();
+        long endTime = System.nanoTime();
         System.out.println("Tempo de execução em nanosegundos djikstra1000: " + (endTime - startTime));
 
         startTime = System.nanoTime();
@@ -161,12 +141,14 @@ public class App {
         startTime = System.nanoTime();
         grafo100000.dijkstraMenorDistanciaTodosParaTodos();
         endTime = System.nanoTime();
-        System.out.println("Tempo de execução em nanosegundos djikstra100000: " + (endTime - startTime));
+        System.out.println("Tempo de execução em nanosegundos djikstra100000: " +
+                (endTime - startTime));
 
         startTime = System.nanoTime();
         grafo1000000.dijkstraMenorDistanciaTodosParaTodos();
         endTime = System.nanoTime();
-        System.out.println("Tempo de execução em nanosegundos djikstra100000: " + (endTime - startTime));
+        System.out.println("Tempo de execução em nanosegundos djikstra100000: " +
+                (endTime - startTime));
 
         // floyd
 
@@ -183,12 +165,40 @@ public class App {
         startTime = System.nanoTime();
         grafo100000.floydWarshall();
         endTime = System.nanoTime();
-        System.out.println("Tempo de execução em nanosegundos floyd100000: " + (endTime - startTime));
+        System.out.println("Tempo de execução em nanosegundos floyd100000: " +
+                (endTime - startTime));
 
         startTime = System.nanoTime();
         grafo1000000.floydWarshall();
         endTime = System.nanoTime();
-        System.out.println("Tempo de execução em nanosegundos floyd100000: " + (endTime - startTime));
+        System.out.println("Tempo de execução em nanosegundos floyd100000: " +
+                (endTime - startTime));
+
+        // belmman
+
+        startTime = System.nanoTime();
+        grafo1000.bellmanFordMenorDistanciaTodosParaTodos();
+        endTime = System.nanoTime();
+        System.out.println("Tempo de execução em nanosegundos bellmanford1000: " +
+                (endTime - startTime));
+
+        startTime = System.nanoTime();
+        grafo10000.bellmanFordMenorDistanciaTodosParaTodos();
+        endTime = System.nanoTime();
+        System.out.println("Tempo de execução em nanosegundos bellmanford10000: " +
+                (endTime - startTime));
+
+        startTime = System.nanoTime();
+        grafo100000.bellmanFordMenorDistanciaTodosParaTodos();
+        endTime = System.nanoTime();
+        System.out.println("Tempo de execução em nanosegundos bellmanford100000: " +
+                (endTime - startTime));
+
+        startTime = System.nanoTime();
+        grafo1000000.bellmanFordMenorDistanciaTodosParaTodos();
+        endTime = System.nanoTime();
+        System.out.println("Tempo de execução em nanosegundos bellmanford100000: " +
+                (endTime - startTime));
     }
 
     private static GrafoListaAdjacencia createVertices(int tamanho) {
