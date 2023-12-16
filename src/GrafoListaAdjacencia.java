@@ -401,6 +401,21 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
             }
         }
 
+        // Criar uma lista de listas para representar a matriz de caminhos mais curtos
+        List<List<Vertice>> matrizCaminhosMaisCurto = new ArrayList<>();
+        for (int i = 0; i < numVertices; i++) {
+            List<Vertice> linha = new ArrayList<>();
+            for (int j = 0; j < numVertices; j++) {
+                if (distancias[i][j] == Double.POSITIVE_INFINITY) {
+                    // Nenhum caminho existe, você pode representar isso de forma diferente se necessário
+                    linha.add(null);
+                } else {
+                    linha.add(adjacencia.get(j));
+                }
+            }
+            matrizCaminhosMaisCurto.add(linha);
+        }
+
         System.out.println("Matriz de distâncias mínimas entre todos os pares de vértices:");
         for (int j = 0; j < numVertices; j++) {
             System.out.print(adjacencia.get(j).getRotulo() + " | ");
@@ -412,7 +427,7 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
             }
             System.out.println();
         }
-        return new ArrayList<Vertice>();
+        return matrizCaminhosMaisCurto;
     }
 
     // Método auxiliar para obter a aresta entre dois vértices
@@ -537,12 +552,6 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
             r += "\n";
         }
         return r;
-    }
-
-    @Override
-    public void floydWarshallMenorDistanciaTodosParaTodos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'floydWarshallMenorDistanciaTodosParaTodos'");
     }
 
 }

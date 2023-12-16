@@ -528,12 +528,6 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
         }
     }
 
-    // Floyd warshall já é de todos para todos?
-    @Override
-    public void floydWarshallMenorDistanciaTodosParaTodos() {
-
-    }
-
     @Override
     public void AEstrela(int verticeOrigem, int verticeDestino) {
         // Verifica se os pesos nos vertices foram preenchidos, pois sem eles não há

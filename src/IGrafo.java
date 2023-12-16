@@ -49,8 +49,6 @@ public interface IGrafo<T> {
 
     List<List<T>> bellmanFordMenorDistanciaTodosParaTodos();
 
-    List<List<T>> floydWarshallMenorDistanciaTodosParaTodos();
-
     void AEstrela(int verticeOrigem, int verticeDestino); // Ponto extra
 
     void imprimeGrafo();
