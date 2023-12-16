@@ -443,16 +443,6 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
             List<Integer> resultado = bellmanFord(origem);
             resultados.add(resultado);
         }
-
-        // Imprime as distâncias mínimas
-        System.out.println("Distâncias mínimas entre todos os pares de vértices:");
-        for (int i = 0; i < vertices; i++) {
-            List<Integer> resultado = resultados.get(i);
-            for (int j = 0; j < vertices; j++) {
-                System.out.println("De " + i + " para " + j + ": " + resultado.get(j));
-            }
-        }
-
         return resultados;
     }
 
