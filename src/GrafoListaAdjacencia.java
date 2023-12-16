@@ -356,7 +356,7 @@ public class GrafoListaAdjacencia implements IGrafo<Vertice> {
         }
         var arrayDist = new ArrayList<Vertice>();
         for (int i = 0; i < numVertices; i++) {
-            arrayDist.add(source.getId(), source);
+            arrayDist.add(source.getId() -1 , source);
             System.out.println(
                     "Menor distância de " + source.getId() + " para " + (i + minVertexId) + ": " + distancia[i]);
         }

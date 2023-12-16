@@ -440,7 +440,7 @@ public class GrafoMatrizAdjacencia implements IGrafo<Integer> {
 
         // Executa o algoritmo de Bellman-Ford para cada vértice como origem
         for (int origem = 0; origem < vertices; origem++) {
-            List<Integer> resultado = bellmanFord(origem).getDistancias();
+            List<Integer> resultado = bellmanFord(origem);
             resultados.add(resultado);
         }
 
