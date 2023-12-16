@@ -25,6 +25,19 @@ public class Vertice {
 
     }
 
+    public Vertice(int id, int peso, String rotulo) {
+        this.id = id;
+        this.arestas = new ArrayList<>();
+        this.pesoVertice = peso;
+        this.rotulo = rotulo;
+        this.visitado = false;
+        this.pai = null;
+        // this.h = 0;
+        this.g = Double.POSITIVE_INFINITY; // Inicializado como infinito até ser
+        // definido
+
+    }
+
     public double getG() {
         return g;
     }
